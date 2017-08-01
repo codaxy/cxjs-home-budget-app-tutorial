@@ -21,10 +21,12 @@
   "homepage": "https://github.com/codaxy/cxjs-home-budget-app-tutorial#readme",
   "dependencies": {
     "babel-polyfill": "^6.23.0",
-    "cx": "^17.7.10",
+    "cx": "^17.7.14",
     "cx-react": "^17.4.1",
+    "cx-theme-material": "^17.7.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "uuid": "^3.1.0",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
@@ -36,7 +38,7 @@
     "css-loader": "^0.28.4",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
-    "html-webpack-plugin": "^2.29.0",
+    "html-webpack-plugin": "^2.30.1",
     "json-loader": "^0.5.7",
     "node-sass": "^4.5.3",
     "sass-loader": "^6.0.6",

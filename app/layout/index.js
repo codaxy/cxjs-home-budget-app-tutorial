@@ -29,31 +29,16 @@ export default <cx>
          <h1>Cx App</h1>
          <dl>
             <dt>
-               App
+               Budget
             </dt>
             <dd>
-               <Link href="~/" url:bind="url">
-                  Home
+               <Link href="~/entry" url:bind="url">
+                  Add Expense
                </Link>
             </dd>
             <dd>
-               <Link href="~/dashboard" url:bind="url">
-                  Dashboard
-               </Link>
-            </dd>
-            <dd>
-               <Link href="~/about" url:bind="url">
-                  About
-               </Link>
-            </dd>
-         </dl>
-         <dl>
-            <dt>
-               Admin
-            </dt>
-            <dd>
-               <Link href="~/users" url:bind="url" match="prefix">
-                  Users
+               <Link href="~/log" url:bind="url">
+                  Log
                </Link>
             </dd>
          </dl>

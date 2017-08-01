@@ -4,6 +4,11 @@ import { Timing, Debug } from 'cx/util';
 //css
 import "./index.scss";
 
+import {enableMaterialLabelPlacement, enableMaterialHelpPlacement} from 'cx-theme-material';
+
+enableMaterialLabelPlacement();
+enableMaterialHelpPlacement();
+
 //store
 const store = new Store();
 

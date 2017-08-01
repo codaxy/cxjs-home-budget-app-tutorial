@@ -7,8 +7,8 @@ import Default from './default';
 import About from './about';
 import Dashboard from './dashboard';
 import UserRoutes from './users';
-
-
+import Entry from './entry';
+import Log from './log';
 
 export default <cx>
     <Sandbox
@@ -19,6 +19,12 @@ export default <cx>
     >
         <Route route="~/" url:bind="url">
             <Default/>
+        </Route>
+        <Route route="~/entry" url:bind="url">
+            <Entry/>
+        </Route>
+        <Route route="~/log" url:bind="url">
+            <Log/>
         </Route>
         <Route route="~/about" url:bind="url">
             <About/>
