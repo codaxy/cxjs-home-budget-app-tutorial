@@ -30,6 +30,12 @@ export default <cx>
                     header: 'Amount',
                     format: "currency",
                     sortable: true
+                },
+                {
+                    field: 'date',
+                    header: 'Date',
+                    format: "date",
+                    sortable: true
                 }
             ]}
         />

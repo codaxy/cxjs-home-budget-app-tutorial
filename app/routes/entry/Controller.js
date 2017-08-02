@@ -35,7 +35,8 @@ export default class extends Controller {
                     id: uuid(),
                     subCategoryId: e.subCategoryId,
                     categoryId: e.categoryId,
-                    amount: e.amount
+                    amount: e.amount,
+                    date: new Date()
                 })
             }
         });
