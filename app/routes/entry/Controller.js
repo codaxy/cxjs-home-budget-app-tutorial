@@ -73,21 +73,21 @@ export default class extends Controller {
     }
 
     addEntry(e, {store}) {
-        let entry = store.get('$record');
+        let entryId = store.get('$record').id;
             
-        this.store.update('$page.entries', (entries) => {
-            let i = entries.findIndex(e => e === entry);
-            return [
-                ...entries.slice(0, i + 1),
-                {
-                    subCategoryId: entry.subCategoryId,
-                    categoryId: entry.categoryId,
-                    label: entry.label,
-                    amount: null,
-                    id: uuid()
-                },
-                ...entries.slice(i + 1)
-            ]
+        store.update('$page.entries', (entries) => {
+            return entries.reduce((acc, e, i) => {
+                acc.push(e);
+                if (e.id === entryId)
+                    acc.push({
+                        subCategoryId: e.subCategoryId,
+                        categoryId: e.categoryId,
+                        label: e.label,
+                        amount: null,
+                        id: uuid()
+                    });
+                return acc;
+            }, []);
         });
     }
 }

@@ -46,7 +46,7 @@ export default <cx>
                         value={bind('$record.occurance', 0)} 
                         options={occurance} icon="refresh"
                         showClear={false} />
-                    <Button icon="add" if={expr("{$record.amount} > 0")} onClick="addEntry"></Button>
+                    <Button icon="add" if={expr("{$record.amount} > 0")} onClick="addEntry" />
                 </div>
             </Repeater>
 
