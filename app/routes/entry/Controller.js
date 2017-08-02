@@ -15,10 +15,36 @@ export default class extends Controller {
                     categoryId: catId,
                     label: sc.name,
                     amount: null,
+                    id: uuid()
                 }));
 
             this.store.set('$page.entries', data);
         }, true)
+
+
+        // this.addTrigger('additional-entry-field', ['$page.entries'], entries => {
+        //     let newEntries = entries;
+        //
+        //     for (let i = 0; i < newEntries.length; i++) {
+        //         let e = newEntries[i];
+        //         let next = newEntries[i + 1] || {};
+        //         if (e.amount > 0 && next.subCategoryId != e.subCategoryId) {
+        //             newEntries = [
+        //                 ...newEntries.slice(0, i + 1),
+        //                 {
+        //                     subCategoryId: e.subCategoryId,
+        //                     categoryId: e.categoryId,
+        //                     label: e.label,
+        //                     amount: null,
+        //                     id: uuid()
+        //                 },
+        //                 ...newEntries.slice(i + 1)
+        //             ]
+        //         }
+        //     }
+        //
+        //     this.store.set("$page.entries", newEntries);
+        // })
     }
 
     selectCategory(e, {store}) {
@@ -35,7 +61,8 @@ export default class extends Controller {
                     id: uuid(),
                     subCategoryId: e.subCategoryId,
                     categoryId: e.categoryId,
-                    amount: e.amount
+                    amount: e.amount,
+                    date: new Date()
                 })
             }
         });
@@ -43,5 +70,24 @@ export default class extends Controller {
         this.store.update('entries', append, ...entries);
 
         this.store.delete('$page.activeCategoryId');
+    }
+
+    addEntry(e, {store}) {
+        let entry = store.get('$record');
+            
+        this.store.update('$page.entries', (entries) => {
+            let i = entries.findIndex(e => e === entry);
+            return [
+                ...entries.slice(0, i + 1),
+                {
+                    subCategoryId: entry.subCategoryId,
+                    categoryId: entry.categoryId,
+                    label: entry.label,
+                    amount: null,
+                    id: uuid()
+                },
+                ...entries.slice(i + 1)
+            ]
+        });
     }
 }

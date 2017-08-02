@@ -1,9 +1,11 @@
-import {HtmlElement, Grid} from 'cx/widgets';
+import {HtmlElement, Grid, Button} from 'cx/widgets';
 import {computable} from 'cx/ui';
 
 import Controller from './Controller';
 
 import {categoryNames, subCategoryNames} from '../../data/categories';
+
+import GeneratorDialog from './GeneratorDialog';
 
 export default <cx>
     <div controller={Controller}>
@@ -30,8 +32,20 @@ export default <cx>
                     header: 'Amount',
                     format: "currency",
                     sortable: true
+                },
+                {
+                    field: 'date',
+                    header: 'Date',
+                    format: "date",
+                    sortable: true
                 }
             ]}
         />
+
+        <br/>
+
+        <GeneratorDialog />
+
+        <Button onClick={(e, {store}) => { store.toggle('$page.generator.visible')}}>Generate</Button>
     </div>
 </cx>
