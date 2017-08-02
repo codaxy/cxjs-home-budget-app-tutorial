@@ -71,4 +71,23 @@ export default class extends Controller {
 
         this.store.delete('$page.activeCategoryId');
     }
+
+    addEntry(e, {store}) {
+        let entry = store.get('$record');
+            
+        this.store.update('$page.entries', (entries) => {
+            let i = entries.findIndex(e => e === entry);
+            return [
+                ...entries.slice(0, i + 1),
+                {
+                    subCategoryId: entry.subCategoryId,
+                    categoryId: entry.categoryId,
+                    label: entry.label,
+                    amount: null,
+                    id: uuid()
+                },
+                ...entries.slice(i + 1)
+            ]
+        });
+    }
 }
