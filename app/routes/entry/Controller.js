@@ -15,10 +15,36 @@ export default class extends Controller {
                     categoryId: catId,
                     label: sc.name,
                     amount: null,
+                    id: uuid()
                 }));
 
             this.store.set('$page.entries', data);
         }, true)
+
+
+        // this.addTrigger('additional-entry-field', ['$page.entries'], entries => {
+        //     let newEntries = entries;
+        //
+        //     for (let i = 0; i < newEntries.length; i++) {
+        //         let e = newEntries[i];
+        //         let next = newEntries[i + 1] || {};
+        //         if (e.amount > 0 && next.subCategoryId != e.subCategoryId) {
+        //             newEntries = [
+        //                 ...newEntries.slice(0, i + 1),
+        //                 {
+        //                     subCategoryId: e.subCategoryId,
+        //                     categoryId: e.categoryId,
+        //                     label: e.label,
+        //                     amount: null,
+        //                     id: uuid()
+        //                 },
+        //                 ...newEntries.slice(i + 1)
+        //             ]
+        //         }
+        //     }
+        //
+        //     this.store.set("$page.entries", newEntries);
+        // })
     }
 
     selectCategory(e, {store}) {

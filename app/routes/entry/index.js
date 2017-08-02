@@ -15,11 +15,12 @@ export default <cx>
             />
         </Repeater>
         <PureContainer if={expr('{$page.entries.length} > 0')}>
-            <Repeater records={bind("$page.entries")}>
+            <Repeater records={bind("$page.entries")} keyField="id">
                 <div>
                     <NumberField
                         value={bind("$record.amount")}
                         label={bind("$record.label")}
+                        format="currency;;2"
                     />
                 </div>
             </Repeater>
