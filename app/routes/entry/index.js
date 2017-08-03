@@ -1,27 +1,9 @@
-import {HtmlElement, Section, NumberField, Repeater, Button, DateField, LookupField, PureContainer, Icon, FlexRow } from 'cx/widgets';
-import {bind, expr} from 'cx/ui';
+import {HtmlElement, Section, NumberField, Repeater, Button, DateField, LookupField, PureContainer, Icon, FlexRow, FlexCol } from 'cx/widgets';
+import {bind, expr, LabelsTopLayout} from 'cx/ui';
 
 import Controller from './Controller';
 
 import {categories, subCategories} from '../../data/categories';
-
-let today = new Date();
-let occurance = [{
-        id: 0,
-        text: "Does not repeat"
-    },{
-        id: 1,
-        text: "Weekly"
-    },{
-        id: 2,
-        text: "Monthly"
-    },{
-        id: 3,
-        text: "Yearly"
-    },{
-        id: 4,
-        text: "Custom..."
-    }];
 
 export default <cx>
     <Section mod="card" controller={Controller} title="Add Expense">
@@ -32,27 +14,37 @@ export default <cx>
                 pressed={expr("{$record.id}=={$page.activeCategoryId}")}
             />
         </Repeater>
-        <PureContainer if={expr('{$page.entries.length} > 0')}>
+        <FlexCol if={expr('{$page.entries.length} > 0')}>
+            <DateField label="Date" value={bind("$page.date", new Date())} showClear={false} />
             <Repeater records={bind("$page.entries")} keyField="id">
                 <div>
-                    <NumberField
-                        value={bind("$record.amount")}
-                        label={bind("$record.label")}
-                        format="currency;;2"
-                        placeholder="$"
-                    />
-                    <DateField label="Date" value={bind("$record.date", today)} showClear={false} />
-                    <LookupField 
-                        value={bind('$record.occurance', 0)} 
-                        options={occurance} icon="refresh"
-                        showClear={false} />
-                    <Button icon="add" if={expr("{$record.amount} > 0")} onClick="addEntry" />
+                <NumberField
+                    value={bind("$record.amount")}
+                    label={bind("$record.label")}
+                    format="currency;;2"
+                    placeholder="$"
+                />
+                <Button icon="add" mod="hollow" if={expr("{$record.amount} > 0")} onClick="addEntry" />
                 </div>
             </Repeater>
-
+            <div>
+                <LookupField 
+                    label="Occurance"
+                    value={bind('$page.repeat', 0)} 
+                    options={bind('$page.occurance')} icon="refresh"
+                    showClear={false} />
+                <DateField if={expr('{$page.repeat} > 0')}
+                    label="Until" 
+                    value={bind('$page.until')} 
+                    minValue={bind('$page.date')} 
+                    showClear={false} />
+            </div>
             <br/>
-
-            <Button mod="primary" onClick="save">Save</Button>
-        </PureContainer>
+            <Button mod="primary" 
+                style="align-self: flex-start;"
+                onClick="save" 
+                disabled={expr('!{$page.valid}')}
+                text="Save" />
+        </FlexCol>
     </Section>
 </cx>
