@@ -1,8 +1,9 @@
-import {HtmlElement, Section, FlexRow, Repeater, Rescope} from 'cx/widgets';
+import {HtmlElement, Section, FlexRow, Repeater, Rescope, Text} from 'cx/widgets';
 import {
     CategoryAxis,
     Chart,
     Column,
+    Bar,
     Gridlines,
     LineGraph,
     Marker,
@@ -12,8 +13,8 @@ import {
     ColorMap,
     Legend
 } from "cx/charts";
-import {Svg, Text} from "cx/svg";
-import {KeySelection} from "cx/ui";
+import {Svg, Text as SvgText} from "cx/svg";
+import {KeySelection, tpl, bind} from "cx/ui";
 
 import Controller from './Controller';
 
@@ -22,7 +23,7 @@ export default <cx>
     <div controller={Controller}>
         <FlexRow wrap spacing>
 
-            <Section mod="card">
+            <Section mod="card" header={<h3>Overview by Categiries</h3>}>
                 <FlexRow align="center">
                     <Svg style="width:180px; height:100%;">
                         <ColorMap />
@@ -51,54 +52,41 @@ export default <cx>
                 </FlexRow>
             </Section>
 
-            <Section mod="card">
-                <div class="kpi-header">
-                    Counter
-                </div>
-                <div class="kpi-main">
-                    <div class="kpi-value">
-                        5,253
-                    </div>
-                    <div class="kpi-value-text">
-                        Users
-                    </div>
-                </div>
-                <div class="kpi-footer">
-                    10% More This Month
-                </div>
-            </Section>
-
-            <Section mod="card">
-                <div class="kpi-header">
-                    Bars
-                </div>
-                <div class="kpi-main">
-                    <Svg style="width:200px; height:100%;">
+            <Section mod="card" header={<h3>Overview by Subcategories</h3>}>
+                <div class="kpi-main" style="height: 400px; width: 400px">
+                    <Svg style="width: 100%; height:100%;">
+                        <ColorMap />
                         <Chart
-                            offset="5 0 -20 40"
+                            offset="20 -20 -140 40"
                             axes={
                                 {
-                                    x: {type: CategoryAxis},
-                                    y: {type: NumericAxis, vertical: true}
+                                    x: { type: CategoryAxis, labelRotation: -90, labelDy: '0.4em', labelAnchor: "end" },
+                                    y: { type: NumericAxis, vertical: true }
                                 }
                             }
                         >
                             <Gridlines xAxis={false}/>
-                            <Repeater records:bind="bars" recordName="$point">
-                                <Column
+                            <Repeater records:bind="$page.bars" recordName="$point">
+                                <Column colorMap="bar" //:expr="15 - Math.round({$point.amount}*6/50)"
                                     width={0.8}
-                                    colorIndex:bind="$point.colorIndex"
-                                    x:bind="$point.day"
-                                    y:bind="$point.value"
-                                />
+                                    x:bind="$point.name"
+                                    y:bind="$point.amount"
+                                    tooltip:tpl="{$point.amount:n;2}" />
                             </Repeater>
                         </Chart>
                     </Svg>
                 </div>
-                <div class="kpi-footer">
-                    Weekends are Off
+            </Section>
+
+            <Section mod="card" header={<h3>Total expenses</h3>}>
+                <div class="kpi-main">
+                    <div class="kpi-value">
+                       <Text tpl='${$page.expensesTotal:n;2}'/>
+                    </div>
                 </div>
             </Section>
+
+            {/*
 
             <Section mod="card">
                 <div class="kpi-header">
@@ -141,7 +129,7 @@ export default <cx>
                 <div class="kpi-footer">
                     Up and Rising
                 </div>
-            </Section>
+            </Section>*/}
         </FlexRow>
     </div>
 </cx>
