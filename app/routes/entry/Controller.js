@@ -5,7 +5,7 @@ import {subCategories} from '../../data/categories';
 
 import uuid from 'uuid';
 
-function repeat(expense, occurance) {
+function repeat(expense, repeat, until) {
     // TODO
     return [];
 }
@@ -28,20 +28,20 @@ export default class extends Controller {
             this.store.set('$page.repeat', 'once');
         }, true)
 
-        this.store.set('$page.occurance', [{
-                occurance: 'once',
+        this.store.set('$page.occurence', [{
+                occurence: 'once',
                 text: "Does not repeat"
             },{
-                occurance: 'daily',
+                occurence: 'daily',
                 text: "Daily"
             },{
-                occurance: 'weekly',
+                occurence: 'weekly',
                 text: "Weekly"
             },{
-                occurance: 'monthly',
+                occurence: 'monthly',
                 text: "Monthly"
             },{
-                occurance: 'yearly',
+                occurence: 'yearly',
                 text: "Yearly"
             }]
         );
@@ -96,8 +96,8 @@ export default class extends Controller {
                     date
                 });
                 if (until) {
-                    let occurance = this.store.get('$page.repeat');
-                    entries.concat(repeat(e, occurance));  
+                    let repeat = this.store.get('$page.repeat');
+                    entries.concat(repeat(e, repeat, until));  
                 }
             }
         });

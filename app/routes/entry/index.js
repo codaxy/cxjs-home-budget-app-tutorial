@@ -44,10 +44,10 @@ export default <cx>
             <FlexRow wrap spacing="large" style="max-width: 400px">
                 <div>
                     <LookupField
-                        label="Occurance"
+                        label="Occurence"
                         value={bind('$page.repeat', 0)}
-                        optionIdField="occurance"
-                        options={bind('$page.occurance')} icon="refresh"
+                        optionIdField="occurence"
+                        options={bind('$page.occurence')} icon="refresh"
                         showClear={false}/>
                 </div>
                 <div>
