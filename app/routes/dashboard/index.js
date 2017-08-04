@@ -67,11 +67,12 @@ export default <cx>
                         >
                             <Gridlines xAxis={false}/>
                             <Repeater records:bind="$page.bars" recordName="$point" keyField="id">
-                                <Column colorMap="bar" //:expr="15 - Math.round({$point.amount}*6/50)"
+                                <Column //:expr="15 - Math.round({$point.amount}*6/50)"
                                     width={0.8}
                                     x:bind="$point.name"
                                     y:bind="$point.amount"
                                     colorName:bind="$point.categoryName"
+                                    colorMap="pie"
                                     tooltip:tpl="{$point.amount:n;2}" />
                             </Repeater>
                         </Chart>
