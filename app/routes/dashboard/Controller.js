@@ -32,6 +32,8 @@ export default class extends Controller {
             }
         ]);
 
+        this.store.init('$page.selectedCatId', 'cat1');
+
         this.addComputable('$page.pie', ['entries'], entries => {
             let category = {};
             if (entries) {
@@ -60,8 +62,8 @@ export default class extends Controller {
 
         // Expenses per subcategory
         this.addComputable('$page.bars', ['entries', '$page.selectedCatId'], (entries, catId) => {
-            let subcats = {};
-            subcats = (entries || []).reduce((subcats, e) => {
+            
+            let subcats = (entries || []).reduce((subcats, e) => {
                 if (catId && e.categoryId !== catId)
                     return subcats;
                 let cat = subcats[e.subCategoryId];
@@ -75,7 +77,8 @@ export default class extends Controller {
                 cat.amount += e.amount;
                 return subcats;
             }, {});
-            return Object.keys(subcats).map(k => subcats[k]);
+            // TODO: use Repeater sorters instead
+            return Object.keys(subcats).map(k => subcats[k]).sort((a,b) => a.amount-b.amount);
         });
     }
 }

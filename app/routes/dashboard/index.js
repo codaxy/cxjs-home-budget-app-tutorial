@@ -14,9 +14,10 @@ import {
     Legend
 } from "cx/charts";
 import {Svg, Text as SvgText} from "cx/svg";
-import {KeySelection, tpl, bind} from "cx/ui";
+import {KeySelection, tpl, bind, computable} from "cx/ui";
 
 import Controller from './Controller';
+import {categoryNames} from '../../data/categories';
 
 export default <cx>
     <h2 putInto="header">Dashboard</h2>
@@ -52,8 +53,29 @@ export default <cx>
                 </FlexRow>
             </Section>
 
-            <Section mod="card" header={<h3>Overview by Subcategories</h3>}>
-                <div class="kpi-main" style="height: 400px; width: 400px">
+            <Section mod="card" header={<h3 text={computable('$page.selectedCatId', catId => categoryNames[catId])} />}>
+                <div class="kpi-main">
+                    <Svg style="width:500px; height:400px;">
+                       <Chart offset="20 -20 -40 130" axes={{
+                          x: { type: NumericAxis, snapToTicks: 0 },
+                          y: { type: CategoryAxis, vertical: true, snapToTicks: 1 }
+                       }}>
+                          <Gridlines yAxis={false} />
+                          <Repeater records={bind("$page.bars")} recordName="$point">
+                            <Bar height={0.5}
+                                 x={bind("$point.amount")}
+                                 y={bind("$point.name")}
+                                 tooltip={tpl("{$point.amount:n;0}")}
+                                 colorName={bind("$point.categoryName")}
+                                 colorMap="pie" />
+                          </Repeater>
+                       </Chart>
+                    </Svg>
+                </div>
+            </Section>
+
+            {/*<Section mod="card" header={<h3>Overview by Subcategories</h3>}>
+                <div class="kpi-main" style="height: 450px; width: 400px">
                     <Svg style="width: 100%; height:100%;">
 
                         <Chart
@@ -67,7 +89,7 @@ export default <cx>
                         >
                             <Gridlines xAxis={false}/>
                             <Repeater records:bind="$page.bars" recordName="$point" keyField="id">
-                                <Column //:expr="15 - Math.round({$point.amount}*6/50)"
+                                <Column 
                                     width={0.8}
                                     x:bind="$point.name"
                                     y:bind="$point.amount"
@@ -78,7 +100,7 @@ export default <cx>
                         </Chart>
                     </Svg>
                 </div>
-            </Section>
+            </Section>*/}
 
             <Section mod="card" header={<h3>Total expenses</h3>}>
                 <div class="kpi-main">
@@ -88,9 +110,7 @@ export default <cx>
                 </div>
             </Section>
 
-            {/*
-
-            <Section mod="card">
+            {/*<Section mod="card">
                 <div class="kpi-header">
                     Line
                 </div>
