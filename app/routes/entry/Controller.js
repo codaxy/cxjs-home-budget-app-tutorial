@@ -5,6 +5,11 @@ import {subCategories} from '../../data/categories';
 
 import uuid from 'uuid';
 
+function repeat(expense, occurance) {
+    // TODO
+    return [];
+}
+
 export default class extends Controller {
     onInit() {
         this.addTrigger('entries', ['$page.activeCategoryId'], catId => {
@@ -20,29 +25,29 @@ export default class extends Controller {
 
             this.store.set('$page.entries', data);
             this.store.delete('$page.until');
-            this.store.set('$page.repeat', 0);
+            this.store.set('$page.repeat', 'once');
         }, true)
 
         this.store.set('$page.occurance', [{
-                id: 0,
+                occurance: 'once',
                 text: "Does not repeat"
             },{
-                id: 1,
+                occurance: 'daily',
                 text: "Daily"
             },{
-                id: 7,
+                occurance: 'weekly',
                 text: "Weekly"
             },{
-                id: 30,
+                occurance: 'monthly',
                 text: "Monthly"
             },{
-                id: 365,
+                occurance: 'yearly',
                 text: "Yearly"
             }]
         );
 
         this.addComputable('$page.valid', ['$page.entries', '$page.repeat', '$page.until' ], (entries=[], repeat=0, until=null) => {
-            return entries.some(x => x.amount > 0) && (repeat === 0 ? true : !!until );
+            return entries.some(x => x.amount > 0) && (repeat === 'once' ? true : !!until );
         });
 
         // this.addTrigger('additional-entry-field', ['$page.entries'], entries => {
@@ -77,7 +82,7 @@ export default class extends Controller {
     save() {
         let data = this.store.get('$page.entries');
         let date = this.store.get('$page.date');
-        let occurance = this.store.get('$page.occurance');
+        let until = this.store.get('$page.until');
 
 
         let entries = [];
@@ -90,10 +95,9 @@ export default class extends Controller {
                     amount: e.amount,
                     date
                 });
-                if (occurance > 0) {
-                    let until = this.store.get($)
-                    date = date.getTime();
-  
+                if (until) {
+                    let occurance = this.store.get('$page.repeat');
+                    entries.concat(repeat(e, occurance));  
                 }
             }
         });

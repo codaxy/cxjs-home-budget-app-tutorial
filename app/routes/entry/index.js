@@ -31,9 +31,10 @@ export default <cx>
                 <LookupField 
                     label="Occurance"
                     value={bind('$page.repeat', 0)} 
+                    optionIdField="occurance"
                     options={bind('$page.occurance')} icon="refresh"
                     showClear={false} />
-                <DateField if={expr('{$page.repeat} > 0')}
+                <DateField if={expr('{$page.repeat} !== "once"')}
                     label="Until" 
                     value={bind('$page.until')} 
                     minValue={bind('$page.date')} 
