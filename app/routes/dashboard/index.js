@@ -22,7 +22,6 @@ export default <cx>
     <h2 putInto="header">Dashboard</h2>
     <div controller={Controller}>
         <FlexRow wrap spacing>
-
             <Section mod="card" header={<h3>Overview by Categiries</h3>}>
                 <FlexRow align="center">
                     <Svg style="width:180px; height:100%;">

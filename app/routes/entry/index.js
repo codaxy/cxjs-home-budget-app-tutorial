@@ -42,8 +42,8 @@ export default <cx>
                         placeholder="$"
                     />
                     <DateField label="Date" value={bind("$record.date", today)} showClear={false} />
-                    <LookupField 
-                        value={bind('$record.occurance', 0)} 
+                    <LookupField
+                        value={bind('$record.occurance', 0)}
                         options={occurance} icon="refresh"
                         showClear={false} />
                     <Button icon="add" if={expr("{$record.amount} > 0")} onClick="addEntry" />
