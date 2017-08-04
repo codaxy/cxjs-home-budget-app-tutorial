@@ -69,6 +69,7 @@ export default class extends Controller {
                     cat = subcats[e.subCategoryId] = {
                         id: e.subCategoryId,
                         name: subCategoryNames[e.subCategoryId],
+                        categoryName: categoryNames[e.categoryId],
                         amount: 0
                     };
                 cat.amount += e.amount;

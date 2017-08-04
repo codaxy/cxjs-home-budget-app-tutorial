@@ -22,10 +22,11 @@ export default <cx>
     <h2 putInto="header">Dashboard</h2>
     <div controller={Controller}>
         <FlexRow wrap spacing>
+            <ColorMap />
             <Section mod="card" header={<h3>Overview by Categiries</h3>}>
                 <FlexRow align="center">
                     <Svg style="width:180px; height:100%;">
-                        <ColorMap />
+
                         <PieChart>
                             <Repeater records:bind="$page.pie" idField="id">
                                 <PieSlice
@@ -54,7 +55,7 @@ export default <cx>
             <Section mod="card" header={<h3>Overview by Subcategories</h3>}>
                 <div class="kpi-main" style="height: 400px; width: 400px">
                     <Svg style="width: 100%; height:100%;">
-                        <ColorMap />
+
                         <Chart
                             offset="20 -20 -140 40"
                             axes={
@@ -65,11 +66,12 @@ export default <cx>
                             }
                         >
                             <Gridlines xAxis={false}/>
-                            <Repeater records:bind="$page.bars" recordName="$point">
+                            <Repeater records:bind="$page.bars" recordName="$point" keyField="id">
                                 <Column colorMap="bar" //:expr="15 - Math.round({$point.amount}*6/50)"
                                     width={0.8}
                                     x:bind="$point.name"
                                     y:bind="$point.amount"
+                                    colorName:bind="$point.categoryName"
                                     tooltip:tpl="{$point.amount:n;2}" />
                             </Repeater>
                         </Chart>
