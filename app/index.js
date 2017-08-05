@@ -1,6 +1,7 @@
 import { Store } from 'cx/data';
 import { Url, History, Widget, startAppLoop } from 'cx/ui';
 import { Timing, Debug } from 'cx/util';
+import {enableTooltips} from 'cx/widgets';
 //css
 import "./index.scss";
 
@@ -8,6 +9,7 @@ import {enableMaterialLabelPlacement, enableMaterialHelpPlacement} from 'cx-them
 
 enableMaterialLabelPlacement();
 enableMaterialHelpPlacement();
+enableTooltips();
 
 //store
 const store = new Store();

@@ -27,7 +27,7 @@ export default <cx>
             />
         </Repeater>
         <FlexCol if={expr('{$page.entries.length} > 0')}>
-            <DateField label="Date" value={bind("$page.date", new Date())} showClear={false}/>
+            <DateField label="Date" value={bind("$page.date")} showClear={false}/>
             <FlexRow wrap spacing="large" style="max-width: 400px">
                 <Repeater records={bind("$page.entries")} keyField="id">
                     <div>
@@ -55,6 +55,7 @@ export default <cx>
                         label="Until"
                         value={bind('$page.until')}
                         minValue={bind('$page.date')}
+                        minExclusive
                         showClear={false}/>
                 </div>
             </FlexRow>

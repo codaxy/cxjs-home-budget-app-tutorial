@@ -20,6 +20,7 @@ export default class extends Controller {
                 }));
 
             this.store.set('$page.entries', data);
+            this.store.set('$page.date', new Date());
             this.store.delete('$page.until');
             this.store.set('$page.repeat', 'once');
         }, true)
@@ -42,8 +43,8 @@ export default class extends Controller {
             }]
         );
 
-        this.addComputable('$page.valid', ['$page.entries', '$page.repeat', '$page.until' ], (entries=[], repeat=0, until=null) => {
-            return entries.some(x => x.amount > 0) && (repeat === 'once' ? true : !!until );
+        this.addComputable('$page.valid', ['$page.entries', '$page.repeat', '$page.until', '$page.date' ], (entries=[], repeat, until, date) => {
+            return entries.some(x => x.amount > 0) && (repeat === 'once' ? true : new Date(until) > new Date(date) );
         });
 
     }
