@@ -1,14 +1,10 @@
 import { Controller } from 'cx/ui';
 import { append } from 'cx/data';
+import {zeroTime} from 'cx/util';
 
 import {subCategories} from '../../data/categories';
 
 import uuid from 'uuid';
-
-function repeat(expense, repeat, until) {
-    // TODO
-    return [];
-}
 
 export default class extends Controller {
     onInit() {
@@ -50,29 +46,6 @@ export default class extends Controller {
             return entries.some(x => x.amount > 0) && (repeat === 'once' ? true : !!until );
         });
 
-        // this.addTrigger('additional-entry-field', ['$page.entries'], entries => {
-        //     let newEntries = entries;
-        //
-        //     for (let i = 0; i < newEntries.length; i++) {
-        //         let e = newEntries[i];
-        //         let next = newEntries[i + 1] || {};
-        //         if (e.amount > 0 && next.subCategoryId != e.subCategoryId) {
-        //             newEntries = [
-        //                 ...newEntries.slice(0, i + 1),
-        //                 {
-        //                     subCategoryId: e.subCategoryId,
-        //                     categoryId: e.categoryId,
-        //                     label: e.label,
-        //                     amount: null,
-        //                     id: uuid()
-        //                 },
-        //                 ...newEntries.slice(i + 1)
-        //             ]
-        //         }
-        //     }
-        //
-        //     this.store.set("$page.entries", newEntries);
-        // })
     }
 
     selectCategory(e, {store}) {
@@ -84,20 +57,13 @@ export default class extends Controller {
         let date = this.store.get('$page.date');
         let until = this.store.get('$page.until');
 
-
         let entries = [];
         data.forEach(e => {
             if (e.amount > 0) {
-                entries.push({
-                    id: uuid(),
-                    subCategoryId: e.subCategoryId,
-                    categoryId: e.categoryId,
-                    amount: e.amount,
-                    date
-                });
+                entries.push(generateEntryLog(e, date));
                 if (until) {
                     let repeat = this.store.get('$page.repeat');
-                    entries.concat(repeat(e, repeat, until));  
+                    entries = entries.concat(repeatExpense(e, date, repeat, until));  
                 }
             }
         });
@@ -120,5 +86,56 @@ export default class extends Controller {
             },
             ...entries.slice(index + 1)
         ]);
+    }
+}
+
+
+function repeatExpense(expense, date, repeat, until) {
+    let futureExpenses = [];
+    let futureDate = zeroTime(new Date(date));
+    until = zeroTime(new Date(until));
+    let increment = 1, getDate, setDate;
+
+    switch(repeat) {
+        case 'daily':
+            getDate = Date.prototype.getDate.bind(futureDate);
+            setDate = Date.prototype.setDate.bind(futureDate);
+            break;
+        case 'weekly':
+            increment = 7;
+            getDate = Date.prototype.getDate.bind(futureDate);
+            setDate = Date.prototype.setDate.bind(futureDate);
+            break;
+        case 'monthly':
+            getDate = Date.prototype.getMonth.bind(futureDate);
+            setDate = Date.prototype.setMonth.bind(futureDate);
+            break;
+        case 'yearly':
+            getDate = Date.prototype.getFullYear.bind(futureDate);
+            setDate = Date.prototype.setFullYear.bind(futureDate);
+            break;
+    }
+    
+    while (true) {
+        // increase futureDate by increment
+        setDate(getDate() + increment);
+
+        if (futureDate > until)
+            break;
+
+        futureExpenses.push(generateEntryLog(expense, futureDate));
+    }
+    
+    return futureExpenses;
+}
+
+
+function generateEntryLog(expense, date) {
+    return {
+        id: uuid(),
+        subCategoryId: expense.subCategoryId,
+        categoryId: expense.categoryId,
+        amount: expense.amount,
+        date: new Date(date)
     }
 }
