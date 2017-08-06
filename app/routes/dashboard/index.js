@@ -11,10 +11,13 @@ import {
     PieChart,
     PieSlice,
     ColorMap,
-    Legend
+    Legend,
+    TimeAxis,
+    ColumnGraph,
+    Range
 } from "cx/charts";
-import {Svg, Text as SvgText} from "cx/svg";
-import {KeySelection, tpl, bind, computable} from "cx/ui";
+import {Svg, Text as SvgText, Rectangle, ClipRect} from "cx/svg";
+import {KeySelection, tpl, bind, expr, computable} from "cx/ui";
 
 import Controller from './Controller';
 import {categoryNames} from '../../data/categories';
@@ -29,13 +32,13 @@ export default <cx>
                     <Svg style="width:180px; height:100%;">
 
                         <PieChart>
-                            <Repeater records:bind="$page.pie" idField="id">
+                            <Repeater records={bind("$page.pie")} idField="id">
                                 <PieSlice
-                                    value:bind="$record.amount"
+                                    value={bind("$record.amount")}
                                     r={90}
                                     r0={30}
                                     offset={4}
-                                    name:bind="$record.name"
+                                    name={bind("$record.name")}
                                     colorMap="pie"
                                     selection={{
                                         type: KeySelection,
@@ -54,9 +57,9 @@ export default <cx>
             </Section>
 
             <Section mod="card" header={<h3 text={computable('$page.selectedCatId', catId => categoryNames[catId])} />}>
-                <div class="kpi-main">
-                    <Svg style="width:500px; height:400px;">
-                       <Chart offset="20 -20 -40 130" axes={{
+                <div class="kpi-main" style="height: 350px;">
+                    <Svg style="width:100%; height:100%;">
+                       <Chart offset="20 -20 -20 130" axes={{
                           x: { type: NumericAxis, snapToTicks: 0 },
                           y: { type: CategoryAxis, vertical: true, snapToTicks: 1 }
                        }}>
@@ -65,7 +68,7 @@ export default <cx>
                             <Bar height={0.5}
                                  x={bind("$point.amount")}
                                  y={bind("$point.name")}
-                                 tooltip={tpl("{$point.amount:n;0}")}
+                                 tooltip={tpl("{$point.amount:n;2}")}
                                  colorName={bind("$point.categoryName")}
                                  colorMap="pie" />
                           </Repeater>
@@ -110,48 +113,31 @@ export default <cx>
                 </div>
             </Section>
 
-            {/*<Section mod="card">
-                <div class="kpi-header">
-                    Line
-                </div>
-                <div class="kpi-main">
-                    <Svg style="width:200px; height:100%;">
+            <Section mod="card" header={<h3>Monthly overview</h3>}>
+                <div class="kpi-main" style="width: 450px">
+                    <Svg style="width: 100%; height:100%;">
                         <Chart
-                            offset="5 0 -20 40"
-                            axes={
-                                {
-                                    x: {type: CategoryAxis},
-                                    y: {type: NumericAxis, vertical: true}
-                                }
-                            }
+                            offset="10 -20 -30 40"
+                            axes={{ x: <TimeAxis />, y: <NumericAxis vertical /> }}
                         >
                             <Gridlines xAxis={false}/>
-                            <LineGraph
-                                data:bind="bars"
-                                xField="day"
-                                yField="value"
-                                colorIndex={6}
-                                lineStyle="stroke-width: 5px"
-                            />
-                            <Repeater records:bind="bars" recordName="$point">
-                                <Marker
-                                    size={10}
-                                    class="line-marker"
-                                    colorIndex={6}
-                                    x:bind="$point.day"
-                                    y:bind="$point.value"
-                                    tooltip={
-                                        {text: {tpl: "{$point.value:n;0}"}, placement: "up"}
-                                    }
-                                />
+                            <Repeater records={bind("$page.histogram")} recordName="$point" keyField="id">
+                                <Column 
+                                    //colorIndex={7}
+                                    width={bind('$point.width')}
+                                    offset={expr("{$point.width}/2")}
+                                    x={bind("$point.date")}
+                                    y={bind("$point.amount")}
+                                    tooltip={tpl("{$point.amount:n;2}")} 
+                                    colorName={bind("$point.categoryName")}
+                                    colorMap="pie" />
                             </Repeater>
                         </Chart>
                     </Svg>
                 </div>
-                <div class="kpi-footer">
-                    Up and Rising
-                </div>
-            </Section>*/}
+            </Section>
+
+           
         </FlexRow>
     </div>
 </cx>
