@@ -5,9 +5,11 @@ import {categoryNames, subCategoryNames} from '../../data/categories';
 export default class extends Controller {
     onInit() {
         //this.store.init('$page.selectedCatId', 'cat1');
+        // get range for current year
+        let currentYear = new Date().getFullYear();
         this.store.init('$page.range', {
-            from: new Date('2017-01-01').toISOString(),
-            to: new Date('2018-01-01').toISOString()
+            from: new Date(`${currentYear}-01-01`).toISOString(),
+            to: new Date(`${currentYear+1}-01-01`).toISOString()
         });
 
         this.addComputable('$page.entries', ['entries', '$page.range'], (entries, range) => {

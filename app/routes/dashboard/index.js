@@ -98,11 +98,11 @@ export default <cx>
                 </div>
             </Section>
 
-            <Section mod="card" header={<h3>Monthly overview</h3>}>
-                <div class="kpi-main" style="width: 450px">
+            <Section mod="card" header={<h3>Monthly overview</h3>} style="min-width: 274px">
+                <div >
                     <Svg style="width: 100%; height:100%;">
                         <Chart
-                            offset="10 -20 -30 40"
+                            offset="10 -10 -20 10"
                             axes={{x: <TimeAxis />, y: <NumericAxis vertical/>}}
                         >
                             <Gridlines xAxis={false}/>
