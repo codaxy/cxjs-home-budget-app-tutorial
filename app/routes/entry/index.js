@@ -55,6 +55,7 @@ export default <cx>
                         label="Until"
                         value={bind('$page.until')}
                         minValue={bind('$page.date')}
+                        required
                         minExclusive
                         showClear={false}/>
                 </div>

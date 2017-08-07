@@ -4,15 +4,18 @@ import {categoryNames, subCategoryNames} from '../../data/categories';
 
 export default class extends Controller {
     onInit() {
-        this.store.init('$page.selectedCatId', 'cat1');
-        this.store.init('$page.range', { from: new Date('2017-01-01'), to: new Date('2017-12-01') })
+        //this.store.init('$page.selectedCatId', 'cat1');
+        this.store.init('$page.range', {
+            from: new Date('2017-01-01').toISOString(),
+            to: new Date('2018-01-01').toISOString()
+        });
 
         this.addComputable('$page.entries', ['entries', '$page.range'], (entries, range) => {
             let from = new Date(range.from);
             let to = new Date(range.to);
             return (entries || []).filter(e => {
                     let date = new Date(e.date);
-                    return from <= date && date <= to;
+                    return from <= date && date < to;
                 });
         });
 
@@ -59,8 +62,44 @@ export default class extends Controller {
                     cat.amount += e.amount;
                     return subcats;
                 }, {});
-            // TODO: use Repeater sorters instead
-            return Object.keys(subcats).map(k => subcats[k]).sort((a,b) => a.amount-b.amount);
+
+            console.log(subcats);
+
+            return Object.keys(subcats).map(k => subcats[k]);
+        });
+
+        // Expenses over time
+        this.addComputable('$page.histogramTotal', ['$page.entries', '$page.range'], (entries, range) => {
+            let from = new Date(range.from);
+            let to = new Date(range.to);
+            let months = {};
+            let month = new Date(from);
+            let id, numOfDays;
+            while (true) {
+                if(month >= to)
+                    break;
+                id = month.toLocaleString('en-us', { month: "short" }) + month.getFullYear();
+                numOfDays = new Date(month.getFullYear(), month.getMonth()+1, 0).getDate();
+                months[id] = {
+                    id,
+                    date: new Date(month),
+                    amount: 0,
+                    width: numOfDays * 24 * 60 * 60 * 1000
+                };
+                month.setMonth(month.getMonth() + 1);
+            }
+
+            months = (entries || [])
+                .reduce((months, e) => {
+                    let date = new Date(e.date);
+                    let month = date.toLocaleString('en-us', { month: "short" })
+                    let year = date.getFullYear();
+                    let id = `${month}${year}`
+                    let cat = months[id];
+                    cat.amount += e.amount;
+                    return months;
+                }, months);
+            return Object.keys(months).map(k => months[k]);
         });
 
         // Expenses over time
@@ -71,7 +110,7 @@ export default class extends Controller {
             let month = new Date(from);
             let id, numOfDays;
             while (true) {
-                if(month > to)
+                if(month >= to)
                     break;
                 id = month.toLocaleString('en-us', { month: "short" }) + month.getFullYear();
                 numOfDays = new Date(month.getFullYear(), month.getMonth()+1, 0).getDate();
@@ -86,7 +125,7 @@ export default class extends Controller {
             }
 
             months = (entries || [])
-                .filter(e => catId ? e.categoryId === catId : true)
+                .filter(e => e.categoryId === catId)
                 .reduce((months, e) => {
                     let date = new Date(e.date);
                     let month = date.toLocaleString('en-us', { month: "short" })
