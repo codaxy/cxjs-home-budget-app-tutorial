@@ -4,38 +4,19 @@ import {categoryNames, subCategoryNames} from '../../data/categories';
 
 export default class extends Controller {
     onInit() {
-        this.store.init('bars', [
-            {
-                "day": "Mo",
-                "value": 500,
-                "colorIndex": 12
-            },
-            {
-                "day": "Tu",
-                "value": 900,
-                "colorIndex": 9
-            },
-            {
-                "day": "We",
-                "value": 850,
-                "colorIndex": 10
-            },
-            {
-                "day": "Th",
-                "value": 950,
-                "colorIndex": 9
-            },
-            {
-                "day": "Fr",
-                "value": 1000,
-                "colorIndex": 8
-            }
-        ]);
-
         this.store.init('$page.selectedCatId', 'cat1');
         this.store.init('$page.range', { from: new Date('2017-01-01'), to: new Date('2017-12-01') })
 
-        this.addComputable('$page.pie', ['entries'], entries => {
+        this.addComputable('$page.entries', ['entries', '$page.range'], (entries, range) => {
+            let from = new Date(range.from);
+            let to = new Date(range.to);
+            return (entries || []).filter(e => {
+                    let date = new Date(e.date);
+                    return from <= date && date <= to;
+                });
+        });
+
+        this.addComputable('$page.pie', ['$page.entries'], entries => {
             let category = {};
             if (entries) {
                 entries.forEach(e => {
@@ -53,7 +34,7 @@ export default class extends Controller {
         });
 
 
-        this.addComputable('$page.expensesTotal', ['entries'], entries => {
+        this.addComputable('$page.expensesTotal', ['$page.entries'], entries => {
             let category = {};
             if (entries) {
                 return entries.reduce((sum, e) => sum + e.amount, 0);
@@ -62,7 +43,7 @@ export default class extends Controller {
         });
 
         // Expenses per subcategory
-        this.addComputable('$page.bars', ['entries', '$page.selectedCatId'], (entries, catId) => {
+        this.addComputable('$page.bars', ['$page.entries', '$page.selectedCatId'], (entries, catId) => {
             
             let subcats = (entries || [])
                 .filter(e => catId ? e.categoryId === catId : true)
@@ -83,9 +64,9 @@ export default class extends Controller {
         });
 
         // Expenses over time
-        this.addComputable('$page.histogram', ['entries', '$page.selectedCatId'], (entries, catId) => {
-            let from = new Date('2017-01-01');
-            let to = new Date('2017-12-31');
+        this.addComputable('$page.histogram', ['$page.entries', '$page.selectedCatId', '$page.range'], (entries, catId, range) => {
+            let from = new Date(range.from);
+            let to = new Date(range.to);
             let months = {};
             let month = new Date(from);
             let id, numOfDays;
@@ -106,10 +87,6 @@ export default class extends Controller {
 
             months = (entries || [])
                 .filter(e => catId ? e.categoryId === catId : true)
-                .filter(e => {
-                    let date = new Date(e.date);
-                    return from <= date && date <= to;
-                })
                 .reduce((months, e) => {
                     let date = new Date(e.date);
                     let month = date.toLocaleString('en-us', { month: "short" })

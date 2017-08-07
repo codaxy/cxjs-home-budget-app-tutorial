@@ -27,7 +27,7 @@ export default <cx>
             />
         </Repeater>
         <FlexCol if={expr('{$page.entries.length} > 0')}>
-            <DateField label="Date" value={bind("$page.date")} showClear={false}/>
+            <DateField label="Date" value={bind("$page.date")} showClear={false} segment='date' />
             <FlexRow wrap spacing="large" style="max-width: 400px">
                 <Repeater records={bind("$page.entries")} keyField="id">
                     <div>

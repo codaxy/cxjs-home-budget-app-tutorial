@@ -1,22 +1,18 @@
-import {HtmlElement, Section, FlexRow, Repeater, Rescope, Text} from 'cx/widgets';
+import {HtmlElement, Section, FlexRow, Repeater, Rescope, Text, MonthField} from 'cx/widgets';
 import {
     CategoryAxis,
     Chart,
     Column,
     Bar,
     Gridlines,
-    LineGraph,
-    Marker,
     NumericAxis,
     PieChart,
     PieSlice,
     ColorMap,
     Legend,
-    TimeAxis,
-    ColumnGraph,
-    Range
+    TimeAxis
 } from "cx/charts";
-import {Svg, Text as SvgText, Rectangle, ClipRect} from "cx/svg";
+import {Svg, Text as SvgText} from "cx/svg";
 import {KeySelection, tpl, bind, expr, computable} from "cx/ui";
 
 import Controller from './Controller';
@@ -25,12 +21,14 @@ import {categoryNames} from '../../data/categories';
 export default <cx>
     <h2 putInto="header">Dashboard</h2>
     <div controller={Controller}>
+        <div putInto="sidebar">
+            <MonthField range label="Period" from={bind('$page.range.from')} to={bind('$page.range.to')} />
+        </div>
         <FlexRow wrap spacing>
             <ColorMap />
             <Section mod="card" header={<h3>Overview by Categiries</h3>}>
                 <FlexRow align="center">
                     <Svg style="width:180px; height:100%;">
-
                         <PieChart>
                             <Repeater records={bind("$page.pie")} idField="id">
                                 <PieSlice
@@ -105,14 +103,6 @@ export default <cx>
                 </div>
             </Section>*/}
 
-            <Section mod="card" header={<h3>Total expenses</h3>}>
-                <div class="kpi-main">
-                    <div class="kpi-value">
-                       <Text tpl='${$page.expensesTotal:n;2}'/>
-                    </div>
-                </div>
-            </Section>
-
             <Section mod="card" header={<h3>Monthly overview</h3>}>
                 <div class="kpi-main" style="width: 450px">
                     <Svg style="width: 100%; height:100%;">
@@ -137,6 +127,13 @@ export default <cx>
                 </div>
             </Section>
 
+            <Section mod="card" header={<h3>Total expenses</h3>}>
+                <div class="kpi-main">
+                    <div class="kpi-value">
+                       <Text tpl='${$page.expensesTotal:n;2}'/>
+                    </div>
+                </div>
+            </Section>
            
         </FlexRow>
     </div>

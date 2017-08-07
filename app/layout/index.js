@@ -43,6 +43,7 @@ export default <cx>
                <Link href="~/log" url:bind="url">
                   Log
                </Link>
+               <ContentPlaceholder name="sidebar"/>
             </dd>
          </dl>
       </aside>
