@@ -16,7 +16,7 @@ import {Svg, Text as SvgText} from "cx/svg";
 import {KeySelection, tpl, bind, expr, computable} from "cx/ui";
 
 import Controller from './Controller';
-import {categoryNames} from '../../data/categories';
+import {categoryNames, subCategoryNames} from '../../data/categories';
 
 export default <cx>
     <h2 putInto="header">Dashboard</h2>
@@ -73,7 +73,7 @@ export default <cx>
                     }}>
                         <Chart offset="20 -20 -20 130" axes={{
                             x: {type: NumericAxis, snapToTicks: 0},
-                            y: {type: CategoryAxis, vertical: true, snapToTicks: 1, inverted: true}
+                            y: {type: CategoryAxis, vertical: true, snapToTicks: 1, inverted: true, names: subCategoryNames }
                         }}>
                             <Gridlines yAxis={false}/>
                             <Repeater
@@ -84,7 +84,7 @@ export default <cx>
                                 <Bar
                                     size={0.8}
                                     x={bind("$point.amount")}
-                                    y={bind("$point.name")}
+                                    y={bind("$point.id")}
                                     tooltip={tpl("{$point.amount:n;2}")}
                                     colorName={bind("$point.categoryName")}
                                     colorMap="pie"/>
