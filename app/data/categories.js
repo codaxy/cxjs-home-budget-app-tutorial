@@ -419,3 +419,74 @@ export const subCategoryNames = {};
 subCategories.forEach(c => {
     subCategoryNames[c.id] = c.name;
 });
+
+// income 
+export const incomeCategories = [
+    {
+        id: 'inc1',
+        name: 'Wages'
+    }, {
+        id: 'inc2',
+        name: 'Other'
+    },
+];
+
+export const incomeCategoryNames = {};
+
+incomeCategories.forEach(c => {
+    incomeCategoryNames[c.id] = c.name;
+});
+
+export const incomeSubCategories = [
+    {
+        id: 11,
+        name: 'Paycheck',
+        catId: 'inc1'
+    },{
+        id: 12,
+        name: 'Tips',
+        catId: 'inc1'
+    },{
+        id: 13,
+        name: 'Bonus',
+        catId: 'inc1'
+    },{
+        id: 14,
+        name: 'Comission',
+        catId: 'inc1'
+    },{
+        id: 15,
+        name: 'Other',
+        catId: 'inc1'
+    },{
+        id: 21,
+        name: 'Transfer from savings',
+        catId: 'inc2'
+    },{
+        id: 22,
+        name: 'Interest income',
+        catId: 'inc2'
+    },{
+        id: 23,
+        name: 'Dividends',
+        catId: 'inc2'
+    },{
+        id: 24,
+        name: 'Gifts',
+        catId: 'inc2'
+    },{
+        id: 25,
+        name: 'Refunds',
+        catId: 'inc2'
+    },{
+        id: 26,
+        name: 'Other',
+        catId: 'inc2'
+    }
+];
+
+export const incomeSubCategoryNames = {};
+
+incomeSubCategories.forEach(c => {
+    incomeSubCategoryNames[c.id] = c.name;
+});
