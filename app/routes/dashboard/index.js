@@ -22,7 +22,11 @@ export default <cx>
     <h2 putInto="header">Dashboard</h2>
     <div controller={Controller}>
         <div putInto="sidebar">
-            <MonthField range label="Period" from={bind('$page.range.from')} to={bind('$page.range.to')}/>
+            <MonthField range 
+                label="Period" 
+                from={bind('$page.range.from')} 
+                to={bind('$page.range.to')}
+                showClear={false} />
         </div>
         <FlexRow wrap spacing>
             <ColorMap />
@@ -94,34 +98,6 @@ export default <cx>
                 </div>
             </Section>
 
-            {/*<Section mod="card" header={<h3>Overview by Subcategories</h3>}>
-             <div class="kpi-main" style="height: 450px; width: 400px">
-             <Svg style="width: 100%; height:100%;">
-
-             <Chart
-             offset="20 -20 -140 40"
-             axes={
-             {
-             x: { type: CategoryAxis, labelRotation: -90, labelDy: '0.4em', labelAnchor: "end" },
-             y: { type: NumericAxis, vertical: true }
-             }
-             }
-             >
-             <Gridlines xAxis={false}/>
-             <Repeater records:bind="$page.bars" recordName="$point" keyField="id">
-             <Column
-             width={0.8}
-             x:bind="$point.name"
-             y:bind="$point.amount"
-             colorName:bind="$point.categoryName"
-             colorMap="pie"
-             tooltip:tpl="{$point.amount:n;2}" />
-             </Repeater>
-             </Chart>
-             </Svg>
-             </div>
-             </Section>*/}
-
             <Section mod="card" header={<h3>Monthly overview</h3>}>
                 <div class="kpi-main" style="width: 450px">
                     <Svg style="width: 100%; height:100%;">
@@ -132,7 +108,6 @@ export default <cx>
                             <Gridlines xAxis={false}/>
                             <Repeater records={bind("$page.histogramTotal")} recordName="$point" keyField="id">
                                 <Column
-                                    //colorIndex={7}
                                     width={bind('$point.width')}
                                     offset={expr("{$point.width}/2")}
                                     x={bind("$point.date")}
@@ -142,7 +117,6 @@ export default <cx>
                             </Repeater>
                             <Repeater records={bind("$page.histogram")} recordName="$point" keyField="id">
                                 <Column
-                                    //colorIndex={7}
                                     width={bind('$point.width')}
                                     offset={expr("{$point.width}/2")}
                                     x={bind("$point.date")}
