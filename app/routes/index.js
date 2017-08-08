@@ -20,7 +20,7 @@ export default <cx>
         <Route route="~/" url:bind="url">
             <Default/>
         </Route>
-        <Route route="~/entry" url:bind="url">
+        <Route route="~/entry/:type" url:bind="url">
             <Entry/>
         </Route>
         <Route route="~/log" url:bind="url">

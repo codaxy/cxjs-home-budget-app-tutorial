@@ -35,8 +35,11 @@ export default <cx>
                <Link href="~/dashboard" url:bind="url">
                   Dashboard
                </Link>
-               <Link href="~/entry" url:bind="url">
+               <Link href="~/entry/expense" url:bind="url">
                   Add Expense
+               </Link>
+               <Link href="~/entry/income" url:bind="url">
+                  Add Income
                </Link>
             </dd>
             <dd>

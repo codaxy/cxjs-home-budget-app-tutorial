@@ -15,11 +15,11 @@ import {bind, expr, LabelsTopLayout} from 'cx/ui';
 
 import Controller from './Controller';
 
-import {categories, subCategories} from '../../data/categories';
+import {categories} from '../../data/categories';
 
 export default <cx>
-    <Section mod="card" controller={Controller} title="Add Expense">
-        <Repeater records={categories}>
+    <Section mod="card" controller={Controller} title={expr("{$route.type}==='income' ? 'Add Income' : 'Add Expense'")}>
+        <Repeater records={bind('$page.categories')}>
             <Button
                 text={bind("$record.name")}
                 onClick="selectCategory"

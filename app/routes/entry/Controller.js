@@ -2,12 +2,25 @@ import { Controller } from 'cx/ui';
 import { append } from 'cx/data';
 import {zeroTime} from 'cx/util';
 
-import {subCategories} from '../../data/categories';
+import {categories as expenseCategories, subCategories as expenseSubCategories, incomeCategories, incomeSubCategories} from '../../data/categories';
 
 import uuid from 'uuid';
 
 export default class extends Controller {
     onInit() {
+        let type = this.store.get('$route.type');
+        let categories, subCategories;
+        if (type === 'income') {
+            categories = incomeCategories
+            subCategories = incomeSubCategories;
+        } else {
+            categories = expenseCategories
+            subCategories = expenseSubCategories;
+        }
+       
+
+        this.store.init('$page.categories', categories);
+
         this.addTrigger('entries', ['$page.activeCategoryId'], catId => {
             let data = subCategories
                 .filter(a => a.catId == catId)
@@ -131,12 +144,12 @@ function repeatExpense(expense, date, repeat, until) {
 }
 
 
-function generateEntryLog(expense, date) {
+function generateEntryLog(entry, date) {
     return {
         id: uuid(),
-        subCategoryId: expense.subCategoryId,
-        categoryId: expense.categoryId,
-        amount: expense.amount,
-        date: new Date(date)
+        subCategoryId: entry.subCategoryId,
+        categoryId: entry.categoryId,
+        amount: entry.amount,
+        date: new Date(date).toISOString()
     }
 }

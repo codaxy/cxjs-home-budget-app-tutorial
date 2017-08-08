@@ -12,16 +12,26 @@ export default class extends Controller {
             to: new Date(`${currentYear+1}-01-01`).toISOString()
         });
 
-        this.addComputable('$page.entries', ['entries', '$page.range'], (entries, range) => {
+        this.addTrigger('entries', ['entries', '$page.range'], (entries, range) => {
             let from = new Date(range.from);
             let to = new Date(range.to);
-            return (entries || []).filter(e => {
-                    let date = new Date(e.date);
-                    return from <= date && date < to;
-                });
-        });
 
-        this.addComputable('$page.pie', ['$page.entries'], entries => {
+            let incomes = [], expenses = [];
+
+            (entries || []).forEach(e => {
+                let date = new Date(e.date);
+                if (date < from || date >= to)
+                    return;
+                if (e.categoryId.includes('cat'))
+                    expenses.push(e);
+                else incomes.push(e);
+            });
+
+            this.store.set('$page.incomes', incomes);
+            this.store.set('$page.expenses', expenses);
+        }, true);
+
+        this.addComputable('$page.pie', ['$page.expenses'], entries => {
             let category = {};
             if (entries) {
                 entries.forEach(e => {
@@ -39,7 +49,7 @@ export default class extends Controller {
         });
 
 
-        this.addComputable('$page.expensesTotal', ['$page.entries'], entries => {
+        this.addComputable('$page.expensesTotal', ['$page.expenses'], entries => {
             let category = {};
             if (entries) {
                 return entries.reduce((sum, e) => sum + e.amount, 0);
@@ -48,7 +58,7 @@ export default class extends Controller {
         });
 
         // Expenses per subcategory
-        this.addComputable('$page.bars', ['$page.entries', '$page.selectedCatId'], (entries, catId) => {
+        this.addComputable('$page.bars', ['$page.expenses', '$page.selectedCatId'], (entries, catId) => {
             
             let subcats = (entries || [])
                 .filter(e => catId ? e.categoryId === catId : true)
@@ -71,7 +81,7 @@ export default class extends Controller {
         });
 
         // Expenses over time
-        this.addComputable('$page.histogramTotal', ['$page.entries', '$page.range'], (entries, range) => {
+        this.addComputable('$page.histogramTotal', ['$page.expenses', '$page.range'], (entries, range) => {
             let from = new Date(range.from);
             let to = new Date(range.to);
             let months = {};
@@ -105,7 +115,7 @@ export default class extends Controller {
         });
 
         // Expenses over time
-        this.addComputable('$page.histogram', ['$page.entries', '$page.selectedCatId', '$page.range'], (entries, catId, range) => {
+        this.addComputable('$page.histogram', ['$page.expenses', '$page.selectedCatId', '$page.range'], (entries, catId, range) => {
             let from = new Date(range.from);
             let to = new Date(range.to);
             let months = {};
