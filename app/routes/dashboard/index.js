@@ -11,7 +11,7 @@ import {
     ColorMap,
     Legend,
     TimeAxis,
-    LineGraph
+    LineGraph,
 } from "cx/charts";
 import {Svg, Text as SvgText} from "cx/svg";
 import {KeySelection, tpl, bind, expr, computable} from "cx/ui";

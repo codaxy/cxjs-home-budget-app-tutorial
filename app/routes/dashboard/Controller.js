@@ -95,21 +95,21 @@ export default class extends Controller {
         // Balance per day over time
         this.addTrigger('balanceData', ['entries', '$page.range'], (entries, range) => {
             let {from, to} = range;
-            entries = [...(entries || [])]
+            let balanceData = [...(entries || [])]
                 .sort((a,b) => a.date > b.date ? 1 : -1)
                 .reduce((acc, e) => {
-                    let {data, saldo} = acc;
-                    let date = e.date;
+                    let length = acc.length
+                    let balance = length > 0 ? acc[length-1].value : 0; 
                     let incr = e.categoryId.includes('exp') ? -e.amount : e.amount;
-                    saldo += incr;
-                    data[date] = saldo;
-                    return { data, saldo };
-                }, { data: {}, saldo: 0 })
-                .data;
-
-            let balanceData = Object.keys(entries)
-                .map(k => ({ date: k, value: entries[k] }))
+                    balance += incr;
+                    acc.push({ 
+                        date: e.date, 
+                        value: balance
+                    });
+                    return acc;
+                }, [])
                 .filter(e => e.date >= from && e.date < to);
+                
             let balance = balanceData.length > 0 ? balanceData[balanceData.length-1].value : 0;
 
             this.store.set('$page.balanceData', balanceData);
