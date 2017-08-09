@@ -22,7 +22,7 @@ export default class extends Controller {
                 let date = new Date(e.date);
                 if (date < from || date >= to)
                     return;
-                if (e.categoryId.includes('cat'))
+                if (e.categoryId.includes('exp'))
                     expenses.push(e);
                 else incomes.push(e);
             });
@@ -48,15 +48,10 @@ export default class extends Controller {
             return Object.keys(category).map(k => category[k]);
         });
 
-
-        this.addComputable('$page.expensesTotal', ['$page.expenses'], entries => {
-            let category = {};
-            if (entries) {
-                return entries.reduce((sum, e) => sum + e.amount, 0);
-            }
-            return 0;
-        });
-
+        // get total incomes and expenses
+        this.addComputable('$page.incomesTotal', ['$page.incomes'], entriesSum);
+        this.addComputable('$page.expensesTotal', ['$page.expenses'], entriesSum);
+        
         // Expenses per subcategory
         this.addComputable('$page.bars', ['$page.expenses', '$page.selectedCatId'], (entries, catId) => {
             
@@ -80,74 +75,69 @@ export default class extends Controller {
             return Object.keys(subcats).map(k => subcats[k]);
         });
 
-        // Expenses over time
+        // Total expenses per month over time
         this.addComputable('$page.histogramTotal', ['$page.expenses', '$page.range'], (entries, range) => {
-            let from = new Date(range.from);
-            let to = new Date(range.to);
-            let months = {};
-            let month = new Date(from);
-            let id, numOfDays;
-            while (true) {
-                if(month >= to)
-                    break;
-                id = month.toLocaleString('en-us', { month: "short" }) + month.getFullYear();
-                numOfDays = new Date(month.getFullYear(), month.getMonth()+1, 0).getDate();
-                months[id] = {
-                    id,
-                    date: new Date(month),
-                    amount: 0,
-                    width: numOfDays * 24 * 60 * 60 * 1000
-                };
-                month.setMonth(month.getMonth() + 1);
-            }
-
-            months = (entries || [])
-                .reduce((months, e) => {
-                    let date = new Date(e.date);
-                    let month = date.toLocaleString('en-us', { month: "short" })
-                    let year = date.getFullYear();
-                    let id = `${month}${year}`
-                    let cat = months[id];
-                    cat.amount += e.amount;
-                    return months;
-                }, months);
+            let months = (entries || [])
+                .reduce(toMonthly, getMonthsMap(range));
             return Object.keys(months).map(k => months[k]);
         });
 
-        // Expenses over time
+        // Expenses per month over time
         this.addComputable('$page.histogram', ['$page.expenses', '$page.selectedCatId', '$page.range'], (entries, catId, range) => {
-            let from = new Date(range.from);
-            let to = new Date(range.to);
-            let months = {};
-            let month = new Date(from);
-            let id, numOfDays;
-            while (true) {
-                if(month >= to)
-                    break;
-                id = month.toLocaleString('en-us', { month: "short" }) + month.getFullYear();
-                numOfDays = new Date(month.getFullYear(), month.getMonth()+1, 0).getDate();
-                months[id] = {
-                    id,
-                    date: new Date(month),
-                    amount: 0,
-                    width: numOfDays * 24 * 60 * 60 * 1000,
-                    categoryName: categoryNames[catId]
-                } 
-                month.setMonth(month.getMonth() + 1);
-            }
-
-            months = (entries || [])
+            let months = (entries || [])
                 .filter(e => e.categoryId === catId)
-                .reduce((months, e) => {
-                    let date = new Date(e.date);
-                    let month = date.toLocaleString('en-us', { month: "short" })
-                    let year = date.getFullYear();
-                    let id = `${month}${year}`
-                    let cat = months[id];
-                    cat.amount += e.amount;
-                    return months;
-                }, months);
+                .reduce(toMonthly, getMonthsMap(range, catId));
             return Object.keys(months).map(k => months[k]);
+        });
+
+        // Balance per day over time
+        this.addComputable('$page.dailyIncomeBalance', ['$page.incomes', '$page.range'], (entries, range) => {
+
         });
     }
+}
+
+// reducers
+function entriesSum(entries) {
+    let category = {};
+    if (entries) {
+        return entries.reduce((sum, e) => sum + e.amount, 0);
+    }
+    return 0;
+}
+
+function toMonthly(months, e) {
+    let date = new Date(e.date);
+    let month = date.toLocaleString('en-us', { month: "short" })
+    let year = date.getFullYear();
+    let id = `${month}${year}`
+    let cat = months[id];
+    if (cat)
+        cat.amount += e.amount;
+    return months;
+}
+
+// Histogram months map
+function getMonthsMap(range, catId) {
+    let from = new Date(range.from);
+    let to = new Date(range.to);
+    let months = {};
+    let month = new Date(from);
+    let id, numOfDays;
+    while (true) {
+        if(month >= to)
+            break;
+        id = month.toLocaleString('en-us', { month: "short" }) + month.getFullYear();
+        numOfDays = new Date(month.getFullYear(), month.getMonth()+1, 0).getDate();
+        months[id] = {
+            id,
+            date: new Date(month),
+            amount: 0,
+            width: numOfDays * 24 * 60 * 60 * 1000
+        };
+        if (catId) months[id].categoryName = categoryNames[catId];
+        month.setMonth(month.getMonth() + 1);
+    }
+
+    return months;
 }

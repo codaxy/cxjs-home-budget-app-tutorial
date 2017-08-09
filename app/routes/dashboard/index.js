@@ -55,6 +55,12 @@ export default <cx>
                                         index: {bind: '$index'},
                                         keyField: 'id'
                                     }}
+                                    tooltip={{
+                                        text: {
+                                            tpl: "{$record.amount:n;2}"
+                                        },
+                                        trackMouse: true
+                                    }}
                                 />
                             </Repeater>
                         </PieChart>
@@ -102,7 +108,7 @@ export default <cx>
                 <div >
                     <Svg style="width: 100%; height:100%;">
                         <Chart
-                            offset="10 -10 -20 10"
+                            offset="10 -10 -20 50"
                             axes={{x: <TimeAxis />, y: <NumericAxis vertical/>}}
                         >
                             <Gridlines xAxis={false}/>
@@ -130,10 +136,16 @@ export default <cx>
                 </div>
             </Section>
 
-            <Section mod="card" header={<h3>Total expenses</h3>}>
+            <Section mod="card" header={<h3>Total</h3>}>
                 <div class="kpi-main">
+                    <div>Expenses</div>
                     <div class="kpi-value">
+                        
                         <Text tpl='${$page.expensesTotal:n;2}'/>
+                    </div>
+                    <div style="margin-top: 20px;">Incomes</div>
+                    <div class="kpi-value">
+                        <Text tpl='${$page.incomesTotal:n;2}'/>
                     </div>
                 </div>
             </Section>

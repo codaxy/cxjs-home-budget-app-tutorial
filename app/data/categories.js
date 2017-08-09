@@ -1,47 +1,53 @@
 export const categories = [
     {
-        id: 'cat1',
+        id: 'exp1',
         name: 'Children'
     }, {
-        id: 'cat2',
+        id: 'exp2',
         name: 'Debt'
     },{
-        id: 'cat3',
+        id: 'exp3',
         name: 'Education'
     },{
-        id: 'cat4',
+        id: 'exp4',
         name: 'Entertainment'
     },{
-        id: 'cat5',
+        id: 'exp5',
         name: 'Everyday'
     },{
-        id: 'cat6',
+        id: 'exp6',
         name: 'Gifts'
     },{
-        id: 'cat7',
+        id: 'exp7',
         name: 'Health/medical'
     },{
-        id: 'cat8',
+        id: 'exp8',
         name: 'Home'
     },{
-        id: 'cat9',
+        id: 'exp9',
         name: 'Insurance'
     },{
-        id: 'cat10',
+        id: 'exp10',
         name: 'Pets'
     },{
-        id: 'cat11',
+        id: 'exp11',
         name: 'Technology'
     },{
-        id: 'cat12',
+        id: 'exp12',
         name: 'Transportation'
     },{
-        id: 'cat13',
+        id: 'exp13',
         name: 'Travel'
     },{
-        id: 'cat14',
+        id: 'exp14',
         name: 'Utilities'
-    }
+    },{
+        id: 'inc1',
+        name: 'Wages'
+    }, {
+        id: 'inc2',
+        name: 'Other'
+    },
 ];
 
 export const categoryNames = {};
@@ -52,365 +58,409 @@ categories.forEach(c => {
 
 export const subCategories = [
     {
-        id: 11,
+        id: 1,
         name: 'Activities',
-        catId: 'cat1'
+        catId: 'exp1'
+    },{
+        id: 2,
+        name: 'Allowance',
+        catId: 'exp1'
+    },{
+        id: 3,
+        name: 'Medical',
+        catId: 'exp1'
+    },{
+        id: 4,
+        name: 'Childcare',
+        catId: 'exp1'
+    },{
+        id: 5,
+        name: 'Clothing',
+        catId: 'exp1'
+    },{
+        id: 6,
+        name: 'School',
+        catId: 'exp1'
+    },{
+        id: 7,
+        name: 'Toys',
+        catId: 'exp1'
+    },{
+        id: 8,
+        name: 'Other',
+        catId: 'exp1'
+    },{
+        id: 9,
+        name: 'Credit cards',
+        catId: 'exp2'
+    },{
+        id: 10,
+        name: 'Student loans',
+        catId: 'exp2'
+    },{
+        id: 11,
+        name: 'Other loans',
+        catId: 'exp2'
     },{
         id: 12,
-        name: 'Allowance',
-        catId: 'cat1'
+        name: 'Taxes',
+        catId: 'exp2'
     },{
         id: 13,
-        name: 'Medical',
-        catId: 'cat1'
+        name: 'Other',
+        catId: 'exp2'
     },{
         id: 14,
-        name: 'Childcare',
-        catId: 'cat1'
+        name: 'Tuition',
+        catId: 'exp3'
     },{
         id: 15,
-        name: 'Clothing',
-        catId: 'cat1'
+        name: 'Books',
+        catId: 'exp3'
     },{
         id: 16,
-        name: 'School',
-        catId: 'cat1'
+        name: 'Music lessons',
+        catId: 'exp3'
     },{
         id: 17,
-        name: 'Toys',
-        catId: 'cat1'
+        name: 'Other',
+        catId: 'exp3'
     },{
         id: 18,
-        name: 'Other',
-        catId: 'cat1'
+        name: 'Books',
+        catId: 'exp4'
+    },{
+        id: 19,
+        name: 'Concerts/shows',
+        catId: 'exp4'
+    },{
+        id: 20,
+        name: 'Games',
+        catId: 'exp4'
     },{
         id: 21,
-        name: 'Credit cards',
-        catId: 'cat2'
+        name: 'Hobbies',
+        catId: 'exp4'
     },{
         id: 22,
-        name: 'Student loans',
-        catId: 'cat2'
+        name: 'Movies',
+        catId: 'exp4'
     },{
         id: 23,
-        name: 'Other loans',
-        catId: 'cat2'
+        name: 'Music',
+        catId: 'exp4'
     },{
         id: 24,
-        name: 'Taxes',
-        catId: 'cat2'
+        name: 'Outdoor activities',
+        catId: 'exp4'
     },{
         id: 25,
+        name: 'Photography',
+        catId: 'exp4'
+    },{
+        id: 26,
+        name: 'Sports',
+        catId: 'exp4'
+    },{
+        id: 27,
+        name: 'Theater/plays',
+        catId: 'exp4'
+    },{
+        id: 28,
+        name: 'TV',
+        catId: 'exp4'
+    },{
+        id: 29,
         name: 'Other',
-        catId: 'cat2'
+        catId: 'exp4'
+    },{
+        id: 30,
+        name: 'Groceries',
+        catId: 'exp5'
     },{
         id: 31,
-        name: 'Tuition',
-        catId: 'cat3'
+        name: 'Restaurants',
+        catId: 'exp5'
     },{
         id: 32,
-        name: 'Books',
-        catId: 'cat3'
+        name: 'Personal supplies',
+        catId: 'exp5'
     },{
         id: 33,
-        name: 'Music lessons',
-        catId: 'cat3'
+        name: 'Clothes',
+        catId: 'exp5'
     },{
         id: 34,
+        name: 'Laundry/dry cleaning',
+        catId: 'exp5'
+    },{
+        id: 35,
+        name: 'Hair/beauty',
+        catId: 'exp5'
+    },{
+        id: 36,
+        name: 'Subscriptions',
+        catId: 'exp5'
+    },{
+        id: 37,
         name: 'Other',
-        catId: 'cat3'
+        catId: 'exp5'
+    },{
+        id: 38,
+        name: 'Gifts',
+        catId: 'exp6'
+    },{
+        id: 39,
+        name: 'Donations (charity)',
+        catId: 'exp6'
+    },{
+        id: 40,
+        name: 'Other',
+        catId: 'exp6'
     },{
         id: 41,
-        name: 'Books',
-        catId: 'cat4'
+        name: 'Doctors/dental/vision',
+        catId: 'exp7'
     },{
         id: 42,
-        name: 'Concerts/shows',
-        catId: 'cat4'
+        name: 'Specialty care',
+        catId: 'exp7'
     },{
         id: 43,
-        name: 'Games',
-        catId: 'cat4'
+        name: 'Pharmacy',
+        catId: 'exp7'
     },{
         id: 44,
-        name: 'Hobbies',
-        catId: 'cat4'
+        name: 'Emergency',
+        catId: 'exp7'
     },{
         id: 45,
-        name: 'Movies',
-        catId: 'cat4'
+        name: 'Other',
+        catId: 'exp7'
     },{
         id: 46,
-        name: 'Music',
-        catId: 'cat4'
+        name: 'Rent/mortgage',
+        catId: 'exp8'
     },{
         id: 47,
-        name: 'Outdoor activities',
-        catId: 'cat4'
+        name: 'Property taxes',
+        catId: 'exp8'
     },{
         id: 48,
-        name: 'Photography',
-        catId: 'cat4'
+        name: 'Furnishings',
+        catId: 'exp8'
     },{
         id: 49,
-        name: 'Sports',
-        catId: 'cat4'
+        name: 'Lawn/garden',
+        catId: 'exp8'
     },{
-        id: 410,
-        name: 'Theater/plays',
-        catId: 'cat4'
-    },{
-        id: 411,
-        name: 'TV',
-        catId: 'cat4'
-    },{
-        id: 412,
-        name: 'Other',
-        catId: 'cat4'
+        id: 50,
+        name: 'Supplies',
+        catId: 'exp8'
     },{
         id: 51,
-        name: 'Groceries',
-        catId: 'cat5'
+        name: 'Maintenance',
+        catId: 'exp8'
     },{
         id: 52,
-        name: 'Restaurants',
-        catId: 'cat5'
+        name: 'Improvements',
+        catId: 'exp8'
     },{
         id: 53,
-        name: 'Personal supplies',
-        catId: 'cat5'
+        name: 'Moving',
+        catId: 'exp8'
     },{
         id: 54,
-        name: 'Clothes',
-        catId: 'cat5'
+        name: 'Other',
+        catId: 'exp8'
     },{
         id: 55,
-        name: 'Laundry/dry cleaning',
-        catId: 'cat5'
+        name: 'Car',
+        catId: 'exp9'
     },{
         id: 56,
-        name: 'Hair/beauty',
-        catId: 'cat5'
+        name: 'Health',
+        catId: 'exp9'
     },{
         id: 57,
-        name: 'Subscriptions',
-        catId: 'cat5'
+        name: 'Home',
+        catId: 'exp9'
     },{
         id: 58,
+        name: 'Life',
+        catId: 'exp9'
+    },{
+        id: 59,
         name: 'Other',
-        catId: 'cat5'
+        catId: 'exp9'
+    },{
+        id: 60,
+        name: 'Food',
+        catId: 'exp10'
     },{
         id: 61,
-        name: 'Gifts',
-        catId: 'cat6'
+        name: 'Vet/medical',
+        catId: 'exp10'
     },{
         id: 62,
-        name: 'Donations (charity)',
-        catId: 'cat6'
+        name: 'Toys',
+        catId: 'exp10'
     },{
         id: 63,
+        name: 'Supplies',
+        catId: 'exp10'
+    },{
+        id: 64,
         name: 'Other',
-        catId: 'cat6'
+        catId: 'exp10'
+    },{
+        id: 65,
+        name: 'Domains & hosting',
+        catId: 'exp11'
+    },{
+        id: 66,
+        name: 'Online services',
+        catId: 'exp11'
+    },{
+        id: 67,
+        name: 'Hardware',
+        catId: 'exp11'
+    },{
+        id: 68,
+        name: 'Software',
+        catId: 'exp11'
+    },{
+        id: 69,
+        name: 'Other',
+        catId: 'exp11'
+    },{
+        id: 70,
+        name: 'Fuel',
+        catId: 'exp12'
     },{
         id: 71,
-        name: 'Doctors/dental/vision',
-        catId: 'cat7'
+        name: 'Car payments',
+        catId: 'exp12'
     },{
         id: 72,
-        name: 'Specialty care',
-        catId: 'cat7'
+        name: 'Repairs',
+        catId: 'exp12'
     },{
         id: 73,
-        name: 'Pharmacy',
-        catId: 'cat7'
+        name: 'Registration/license',
+        catId: 'exp12'
     },{
         id: 74,
-        name: 'Emergency',
-        catId: 'cat7'
+        name: 'Supplies',
+        catId: 'exp12'
     },{
         id: 75,
+        name: 'Public transit',
+        catId: 'exp12'
+    },{
+        id: 76,
         name: 'Other',
-        catId: 'cat7'
+        catId: 'exp12'
+    },{
+        id: 77,
+        name: 'Airfare',
+        catId: 'exp13'
+    },{
+        id: 78,
+        name: 'Hotels',
+        catId: 'exp13'
+    },{
+        id: 79,
+        name: 'Food',
+        catId: 'exp13'
+    },{
+        id: 80,
+        name: 'Transportation',
+        catId: 'exp13'
     },{
         id: 81,
-        name: 'Rent/mortgage',
-        catId: 'cat8'
+        name: 'Entertainment',
+        catId: 'exp13'
     },{
         id: 82,
-        name: 'Property taxes',
-        catId: 'cat8'
+        name: 'Other',
+        catId: 'exp13'
     },{
         id: 83,
-        name: 'Furnishings',
-        catId: 'cat8'
+        name: 'Phone',
+        catId: 'exp14'
     },{
         id: 84,
-        name: 'Lawn/garden',
-        catId: 'cat8'
+        name: 'TV',
+        catId: 'exp14'
     },{
         id: 85,
-        name: 'Supplies',
-        catId: 'cat8'
+        name: 'Internet',
+        catId: 'exp14'
     },{
         id: 86,
-        name: 'Maintenance',
-        catId: 'cat8'
+        name: 'Electricity',
+        catId: 'exp14'
     },{
         id: 87,
-        name: 'Improvements',
-        catId: 'cat8'
+        name: 'Heat/gas',
+        catId: 'exp14'
     },{
         id: 88,
-        name: 'Moving',
-        catId: 'cat8'
+        name: 'Water',
+        catId: 'exp14'
     },{
         id: 89,
+        name: 'Trash',
+        catId: 'exp14'
+    },{
+        id: 90,
         name: 'Other',
-        catId: 'cat8'
+        catId: 'exp14'
     },{
         id: 91,
-        name: 'Car',
-        catId: 'cat9'
+        name: 'Paycheck',
+        catId: 'inc1'
     },{
         id: 92,
-        name: 'Health',
-        catId: 'cat9'
+        name: 'Tips',
+        catId: 'inc1'
     },{
         id: 93,
-        name: 'Home',
-        catId: 'cat9'
+        name: 'Bonus',
+        catId: 'inc1'
     },{
         id: 94,
-        name: 'Life',
-        catId: 'cat9'
+        name: 'Comission',
+        catId: 'inc1'
     },{
         id: 95,
         name: 'Other',
-        catId: 'cat9'
+        catId: 'inc1'
+    },{
+        id: 96,
+        name: 'Transfer from savings',
+        catId: 'inc2'
+    },{
+        id: 97,
+        name: 'Interest income',
+        catId: 'inc2'
+    },{
+        id: 98,
+        name: 'Dividends',
+        catId: 'inc2'
+    },{
+        id: 99,
+        name: 'Gifts',
+        catId: 'inc2'
+    },{
+        id: 100,
+        name: 'Refunds',
+        catId: 'inc2'
     },{
         id: 101,
-        name: 'Food',
-        catId: 'cat10'
-    },{
-        id: 102,
-        name: 'Vet/medical',
-        catId: 'cat10'
-    },{
-        id: 103,
-        name: 'Toys',
-        catId: 'cat10'
-    },{
-        id: 104,
-        name: 'Supplies',
-        catId: 'cat10'
-    },{
-        id: 105,
         name: 'Other',
-        catId: 'cat10'
-    },{
-        id: 111,
-        name: 'Domains & hosting',
-        catId: 'cat11'
-    },{
-        id: 112,
-        name: 'Online services',
-        catId: 'cat11'
-    },{
-        id: 113,
-        name: 'Hardware',
-        catId: 'cat11'
-    },{
-        id: 114,
-        name: 'Software',
-        catId: 'cat11'
-    },{
-        id: 115,
-        name: 'Other',
-        catId: 'cat11'
-    },{
-        id: 121,
-        name: 'Fuel',
-        catId: 'cat12'
-    },{
-        id: 122,
-        name: 'Car payments',
-        catId: 'cat12'
-    },{
-        id: 123,
-        name: 'Repairs',
-        catId: 'cat12'
-    },{
-        id: 124,
-        name: 'Registration/license',
-        catId: 'cat12'
-    },{
-        id: 125,
-        name: 'Supplies',
-        catId: 'cat12'
-    },{
-        id: 126,
-        name: 'Public transit',
-        catId: 'cat12'
-    },{
-        id: 127,
-        name: 'Other',
-        catId: 'cat12'
-    },{
-        id: 131,
-        name: 'Airfare',
-        catId: 'cat13'
-    },{
-        id: 132,
-        name: 'Hotels',
-        catId: 'cat13'
-    },{
-        id: 133,
-        name: 'Food',
-        catId: 'cat13'
-    },{
-        id: 134,
-        name: 'Transportation',
-        catId: 'cat13'
-    },{
-        id: 135,
-        name: 'Entertainment',
-        catId: 'cat13'
-    },{
-        id: 136,
-        name: 'Other',
-        catId: 'cat13'
-    },{
-        id: 141,
-        name: 'Phone',
-        catId: 'cat14'
-    },{
-        id: 142,
-        name: 'TV',
-        catId: 'cat14'
-    },{
-        id: 143,
-        name: 'Internet',
-        catId: 'cat14'
-    },{
-        id: 144,
-        name: 'Electricity',
-        catId: 'cat14'
-    },{
-        id: 145,
-        name: 'Heat/gas',
-        catId: 'cat14'
-    },{
-        id: 146,
-        name: 'Water',
-        catId: 'cat14'
-    },{
-        id: 147,
-        name: 'Trash',
-        catId: 'cat14'
-    },{
-        id: 148,
-        name: 'Other',
-        catId: 'cat14'
+        catId: 'inc2'
     }
 ];
 
@@ -418,75 +468,4 @@ export const subCategoryNames = {};
 
 subCategories.forEach(c => {
     subCategoryNames[c.id] = c.name;
-});
-
-// income 
-export const incomeCategories = [
-    {
-        id: 'inc1',
-        name: 'Wages'
-    }, {
-        id: 'inc2',
-        name: 'Other'
-    },
-];
-
-export const incomeCategoryNames = {};
-
-incomeCategories.forEach(c => {
-    incomeCategoryNames[c.id] = c.name;
-});
-
-export const incomeSubCategories = [
-    {
-        id: 11,
-        name: 'Paycheck',
-        catId: 'inc1'
-    },{
-        id: 12,
-        name: 'Tips',
-        catId: 'inc1'
-    },{
-        id: 13,
-        name: 'Bonus',
-        catId: 'inc1'
-    },{
-        id: 14,
-        name: 'Comission',
-        catId: 'inc1'
-    },{
-        id: 15,
-        name: 'Other',
-        catId: 'inc1'
-    },{
-        id: 21,
-        name: 'Transfer from savings',
-        catId: 'inc2'
-    },{
-        id: 22,
-        name: 'Interest income',
-        catId: 'inc2'
-    },{
-        id: 23,
-        name: 'Dividends',
-        catId: 'inc2'
-    },{
-        id: 24,
-        name: 'Gifts',
-        catId: 'inc2'
-    },{
-        id: 25,
-        name: 'Refunds',
-        catId: 'inc2'
-    },{
-        id: 26,
-        name: 'Other',
-        catId: 'inc2'
-    }
-];
-
-export const incomeSubCategoryNames = {};
-
-incomeSubCategories.forEach(c => {
-    incomeSubCategoryNames[c.id] = c.name;
 });

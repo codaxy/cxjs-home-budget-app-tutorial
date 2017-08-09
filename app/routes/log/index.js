@@ -1,5 +1,5 @@
 import {HtmlElement, Grid, Button} from 'cx/widgets';
-import {computable} from 'cx/ui';
+import {computable, bind} from 'cx/ui';
 
 import Controller from './Controller';
 
@@ -16,6 +16,13 @@ export default <cx>
             style="height: 300px"
             columns={[
                 {
+                    field: 'date',
+                    header: 'Date',
+                    format: 'date',
+                    sortable: true,
+                    value: bind("$record.date")
+                },
+                {
                     field: 'categoryId',
                     header: 'Category',
                     sortable: true,
@@ -31,12 +38,6 @@ export default <cx>
                     field: 'amount',
                     header: 'Amount',
                     format: "currency",
-                    sortable: true
-                },
-                {
-                    field: 'date',
-                    header: 'Date',
-                    format: "date",
                     sortable: true
                 }
             ]}

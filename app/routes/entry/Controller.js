@@ -2,27 +2,21 @@ import { Controller } from 'cx/ui';
 import { append } from 'cx/data';
 import {zeroTime} from 'cx/util';
 
-import {categories as expenseCategories, subCategories as expenseSubCategories, incomeCategories, incomeSubCategories} from '../../data/categories';
+import {categories, subCategories} from '../../data/categories';
 
 import uuid from 'uuid';
 
 export default class extends Controller {
     onInit() {
-        let type = this.store.get('$route.type');
-        let categories, subCategories;
-        if (type === 'income') {
-            categories = incomeCategories
-            subCategories = incomeSubCategories;
-        } else {
-            categories = expenseCategories
-            subCategories = expenseSubCategories;
-        }
-       
+        const type = this.store.get('$route.type').substring(0,3);
+        const entryCategories = categories.filter(c => c.id.includes(type))
+        const entrySubCategories = subCategories.filter(s => s.catId.includes(type));
 
-        this.store.init('$page.categories', categories);
+        this.store.init('$page.categories', entryCategories);
+        this.store.delete('$page.activeCategoryId');
 
         this.addTrigger('entries', ['$page.activeCategoryId'], catId => {
-            let data = subCategories
+            let data = entrySubCategories
                 .filter(a => a.catId == catId)
                 .map(sc => ({
                     subCategoryId: sc.id,
@@ -36,7 +30,7 @@ export default class extends Controller {
             this.store.set('$page.date', new Date());
             this.store.delete('$page.until');
             this.store.set('$page.repeat', 'once');
-        }, true)
+        }, true);
 
         this.store.set('$page.occurence', [{
                 occurence: 'once',
