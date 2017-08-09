@@ -16,7 +16,7 @@ export default class extends Controller {
             let from = new Date(range.from);
             let to = new Date(range.to);
 
-            let incomes = [], expenses = [];
+            let incomes = [], expenses = [], filteredEntries = [];
 
             (entries || []).forEach(e => {
                 let date = new Date(e.date);
@@ -25,10 +25,12 @@ export default class extends Controller {
                 if (e.categoryId.includes('exp'))
                     expenses.push(e);
                 else incomes.push(e);
+                filteredEntries.push(e);
             });
 
             this.store.set('$page.incomes', incomes);
             this.store.set('$page.expenses', expenses);
+            this.store.set('$page.entries', filteredEntries);
         }, true);
 
         this.addComputable('$page.pie', ['$page.expenses'], entries => {
@@ -91,9 +93,28 @@ export default class extends Controller {
         });
 
         // Balance per day over time
-        this.addComputable('$page.dailyIncomeBalance', ['$page.incomes', '$page.range'], (entries, range) => {
+        this.addTrigger('balanceData', ['entries', '$page.range'], (entries, range) => {
+            let {from, to} = range;
+            entries = [...(entries || [])]
+                .sort((a,b) => a.date > b.date ? 1 : -1)
+                .reduce((acc, e) => {
+                    let {data, saldo} = acc;
+                    let date = e.date;
+                    let incr = e.categoryId.includes('exp') ? -e.amount : e.amount;
+                    saldo += incr;
+                    data[date] = saldo;
+                    return { data, saldo };
+                }, { data: {}, saldo: 0 })
+                .data;
 
-        });
+            let balanceData = Object.keys(entries)
+                .map(k => ({ date: k, value: entries[k] }))
+                .filter(e => e.date >= from && e.date < to);
+            let balance = balanceData.length > 0 ? balanceData[balanceData.length-1].value : 0;
+
+            this.store.set('$page.balanceData', balanceData);
+            this.store.set('$page.balance', balance);
+        }, true);
     }
 }
 

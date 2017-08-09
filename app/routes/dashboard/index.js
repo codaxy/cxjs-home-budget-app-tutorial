@@ -10,7 +10,8 @@ import {
     PieSlice,
     ColorMap,
     Legend,
-    TimeAxis
+    TimeAxis,
+    LineGraph
 } from "cx/charts";
 import {Svg, Text as SvgText} from "cx/svg";
 import {KeySelection, tpl, bind, expr, computable} from "cx/ui";
@@ -147,6 +148,27 @@ export default <cx>
                     <div class="kpi-value">
                         <Text tpl='${$page.incomesTotal:n;2}'/>
                     </div>
+                    <div style="margin-top: 20px;">Balance</div>
+                    <div class="kpi-value">
+                        <Text tpl='${$page.balance:n;2}'/>
+                    </div>
+                </div>
+            </Section>
+
+            <Section mod="card" header={<h3>Balance</h3>}>
+                <div style="width: 450px; height: 300px;">
+                    <Svg style="width: 100%;">
+                        <Chart offset="20 -20 -20 50" axes={{ x: { type: TimeAxis }, y: { type: NumericAxis, vertical: true }}}>
+                            <Gridlines />
+                            <LineGraph
+                                data={bind('$page.balanceData')}
+                                xField='date'
+                                yField='value'
+                                colorIndex={0}
+                                area
+                            />
+                        </Chart>
+                    </Svg>
                 </div>
             </Section>
 

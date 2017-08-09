@@ -54,7 +54,8 @@ export default <cx>
                 minValue={bind('$page.date')}
                 required
                 minExclusive
-                showClear={false} />
+                showClear={false}
+                segment='date' />
 
             <br />
             
