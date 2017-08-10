@@ -72,8 +72,6 @@ export default class extends Controller {
                     return subcats;
                 }, {});
 
-            console.log(subcats);
-
             return Object.keys(subcats).map(k => subcats[k]);
         });
 
@@ -89,6 +87,13 @@ export default class extends Controller {
             let months = (entries || [])
                 .filter(e => e.categoryId === catId)
                 .reduce(toMonthly, getMonthsMap(range, catId));
+            return Object.keys(months).map(k => months[k]);
+        });
+
+        // Total incomes per month over time
+        this.addComputable('$page.incomeHistogramTotal', ['$page.incomes', '$page.range'], (entries, range) => {
+            let months = (entries || [])
+                .reduce(toMonthly, getMonthsMap(range));
             return Object.keys(months).map(k => months[k]);
         });
 
@@ -154,7 +159,7 @@ function getMonthsMap(range, catId) {
             id,
             date: new Date(month),
             amount: 0,
-            width: numOfDays * 24 * 60 * 60 * 1000
+            width: numOfDays * 24 * 60 * 60 * 1000,
         };
         if (catId) months[id].categoryName = categoryNames[catId];
         month.setMonth(month.getMonth() + 1);

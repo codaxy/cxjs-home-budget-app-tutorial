@@ -172,6 +172,40 @@ export default <cx>
                 </div>
             </Section>
 
+            <Section mod="card" header={<h3>Monthly overview</h3>} style="min-width: 274px">
+                <div style="width: 600px;">
+                    <Svg style="width: 100%; height:100%;">
+                        <Chart
+                            offset="10 -10 -20 50"
+                            axes={{x: <CategoryAxis />, y: <NumericAxis vertical/>}}
+                        >
+                            <Gridlines xAxis={false}/>
+                            <Repeater records={bind("$page.incomeHistogramTotal")} recordName="$point" keyField="id">
+                                <Column name="Incomes"
+                                    colorIndex={9}
+                                    width={0.3}
+                                    offset={-0.15}
+                                    x={bind("$point.id")}
+                                    y={bind("$point.amount")}
+                                    tooltip={tpl("{$point.amount:n;2}")}
+                                />
+                            </Repeater>
+                            <Repeater records={bind("$page.histogramTotal")} recordName="$point" keyField="id">
+                                <Column name="Expenses"
+                                    colorIndex={0}
+                                    width={0.3}
+                                    offset={0.15}
+                                    x={bind("$point.id")}
+                                    y={bind("$point.amount")}
+                                    tooltip={tpl("{$point.amount:n;2}")}
+                                />
+                            </Repeater>
+                        </Chart>
+                    </Svg>
+                    
+                </div>
+            </Section>
+
         </FlexRow>
     </div>
 </cx>
