@@ -29,7 +29,7 @@ export default <cx>
         <Route route="~/about" url:bind="url">
             <About/>
         </Route>
-       <Route route="~/dashboard" url:bind="url">
+       <Route route="~/dashboard/:type" url:bind="url">
           <Dashboard/>
        </Route>
        <UserRoutes/>

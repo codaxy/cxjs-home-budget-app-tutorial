@@ -32,7 +32,7 @@ export default <cx>
                Budget
             </dt>
             <dd>
-               <Link href="~/dashboard" url:bind="url">
+               <Link href="~/dashboard/balance" url:bind="url">
                   Dashboard
                </Link>
                <Link href="~/entry/expense" url:bind="url">
