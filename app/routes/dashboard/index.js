@@ -1,4 +1,4 @@
-import {HtmlElement, Section, FlexRow, Repeater, FlexCol, Text, MonthField} from 'cx/widgets';
+import {HtmlElement, Section, FlexRow, Repeater, FlexCol, Text, MonthField, Tab} from 'cx/widgets';
 import {
     CategoryAxis,
     Chart,
@@ -14,7 +14,7 @@ import {
     LineGraph,
 } from "cx/charts";
 import {Svg, Text as SvgText} from "cx/svg";
-import {KeySelection, tpl, bind, expr, computable} from "cx/ui";
+import {KeySelection, tpl, bind, expr, computable, LabelsLeftLayout} from "cx/ui";
 
 import Controller from './Controller';
 import {categoryNames, subCategoryNames} from '../../data/categories';
@@ -22,14 +22,19 @@ import {categoryNames, subCategoryNames} from '../../data/categories';
 export default <cx>
     <h2 putInto="header">Dashboard</h2>
     <div controller={Controller} class="cxb-dashboard">
-        <div putInto="sidebar">
-            <MonthField range 
-                label="Period" 
-                from={bind('$page.range.from')} 
-                to={bind('$page.range.to')}
-                showClear={false} />
-        </div>
-        <div class="cxe-dashboard-toolbar" />
+        <Section mod="card">
+            <Tab tab="balance" value={bind("$page.tab")} mod="line">Balance</Tab>
+            <Tab tab="expenses" value={bind("$page.tab")} mod="line">Expenses</Tab>
+            <Tab tab="incomes" value={bind("$page.tab")} mod="line">Incomes</Tab>   
+            <div layout={LabelsLeftLayout} style="display: inline-block;">
+                <MonthField style="min-width: 192px; margin-top: 0;"
+                    range 
+                    label="Period" 
+                    from={bind('$page.range.from')} 
+                    to={bind('$page.range.to')}
+                    showClear={false} />
+            </div>
+        </Section>
         <FlexRow wrap spacing class="cxe-dashboard-main">
             <ColorMap />
             <Section
@@ -42,7 +47,7 @@ export default <cx>
                     <Legend.Scope>
                     <Svg style="width:180px; height:100%;">
                         <PieChart>
-                            <Repeater records={bind("$page.expensesPie")} idField="id">
+                            <Repeater records={bind("$page.pie")} idField="id">
                                 <PieSlice
                                     value={bind("$record.amount")}
                                     r={90}

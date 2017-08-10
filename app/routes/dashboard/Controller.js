@@ -12,6 +12,8 @@ export default class extends Controller {
             to: new Date(`${currentYear+1}-01-01`).toISOString()
         });
 
+        this.store.init('$page.tab', 'balance');
+
         this.addTrigger('entries', ['entries', '$page.range'], (entries, range) => {
             let from = new Date(range.from);
             let to = new Date(range.to);
@@ -50,7 +52,8 @@ export default class extends Controller {
             return Object.keys(category).map(k => category[k]);
         });
 
-        this.addComputable('$page.incomesPie', ['$page.incomes'], entries => {
+        this.addComputable('$page.pie', ['$page.expenses', '$page.incomes', '$page.tab'], (expenses, incomes, tab) => {
+            let entries = tab === "incomes" ? incomes : expenses;
             let category = {};
             if (entries) {
                 entries.forEach(e => {
@@ -72,8 +75,8 @@ export default class extends Controller {
         this.addComputable('$page.expensesTotal', ['$page.expenses'], entriesSum);
         
         // Expenses per subcategory
-        this.addComputable('$page.bars', ['$page.expenses', '$page.selectedCatId'], (entries, catId) => {
-            
+        this.addComputable('$page.bars', ['$page.expenses', '$page.incomes', '$page.selectedCatId', '$page.tab'], (expenses, incomes, catId, tab) => {
+            let entries = tab === "incomes" ? incomes : expenses;
             let subcats = (entries || [])
                 .filter(e => catId ? e.categoryId === catId : true)
                 .reduce((subcats, e) => {
