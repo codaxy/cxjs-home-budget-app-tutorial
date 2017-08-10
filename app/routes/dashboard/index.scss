@@ -50,3 +50,22 @@
 .cxe-categoryaxis-label {
    font-size: 12px;
 }
+
+.cxb-dashboard {
+   position: relative;
+   height: 100%;
+}
+
+.cxe-dashboard-toolbar {
+   left: -1rem;
+   right: -1rem;
+   top: -1rem;
+   position: absolute;
+   display: block;
+   height: 50px;
+   background-color: wheat;
+}
+
+.cxe-dashboard-main {
+   padding-top: 50px;
+}

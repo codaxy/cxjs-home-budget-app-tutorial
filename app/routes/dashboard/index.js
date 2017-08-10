@@ -21,7 +21,7 @@ import {categoryNames, subCategoryNames} from '../../data/categories';
 
 export default <cx>
     <h2 putInto="header">Dashboard</h2>
-    <div controller={Controller}>
+    <div controller={Controller} class="cxb-dashboard">
         <div putInto="sidebar">
             <MonthField range 
                 label="Period" 
@@ -29,7 +29,8 @@ export default <cx>
                 to={bind('$page.range.to')}
                 showClear={false} />
         </div>
-        <FlexRow wrap spacing>
+        <div class="cxe-dashboard-toolbar" />
+        <FlexRow wrap spacing class="cxe-dashboard-main">
             <ColorMap />
             <Section
                 mod="card"
@@ -38,9 +39,10 @@ export default <cx>
                 style="max-width: 300px;"
             >
                 <FlexCol align="center" spacing>
+                    <Legend.Scope>
                     <Svg style="width:180px; height:100%;">
                         <PieChart>
-                            <Repeater records={bind("$page.pie")} idField="id">
+                            <Repeater records={bind("$page.expensesPie")} idField="id">
                                 <PieSlice
                                     value={bind("$record.amount")}
                                     r={90}
@@ -67,6 +69,7 @@ export default <cx>
                         </PieChart>
                     </Svg>
                     <Legend/>
+                    </Legend.Scope>
                 </FlexCol>
             </Section>
 
@@ -80,7 +83,7 @@ export default <cx>
                 <div>
                     <Svg style={{
                         width: "100%",
-                        height: {expr: "40 + {$page.bars.length} * 25"}
+                        minHeight: {expr: "40 + {$page.bars.length} * 25"}
                     }}>
                         <Chart offset="20 -20 -20 130" axes={{
                             x: {type: NumericAxis, snapToTicks: 0},
@@ -107,7 +110,10 @@ export default <cx>
 
             <Section mod="card" header={<h3>Monthly overview</h3>} style="min-width: 274px">
                 <div >
-                    <Svg style="width: 100%; height:100%;">
+                    <Svg style={{
+                            minWidth: {expr: "40 + {$page.histogramTotal.length} * 25"},
+                            height: '100%'
+                        }}>
                         <Chart
                             offset="10 -10 -20 50"
                             axes={{x: <TimeAxis />, y: <NumericAxis vertical/>}}
@@ -172,20 +178,24 @@ export default <cx>
                 </div>
             </Section>
 
-            <Section mod="card" header={<h3>Monthly overview</h3>} style="min-width: 274px">
-                <div style="width: 600px;">
-                    <Svg style="width: 100%; height:100%;">
+            <Section mod="card" header={<h3>Incomes vs Expenses</h3>} style="min-width: 274px">
+                <div style="max-width: 550px;">
+                    <Legend.Scope>
+                    <Svg style={{
+                            minWidth: {expr: "40 + {$page.incomeHistogramTotal.length} * 40"},
+                            height: '100%'
+                        }}>
                         <Chart
-                            offset="10 -10 -20 50"
-                            axes={{x: <CategoryAxis />, y: <NumericAxis vertical/>}}
+                            offset="10 -10 -55 50"
+                            axes={{x: <CategoryAxis labelRotation={-45} labelOffset={5} labelAnchor="end" />, y: <NumericAxis vertical/>}}
                         >
                             <Gridlines xAxis={false}/>
                             <Repeater records={bind("$page.incomeHistogramTotal")} recordName="$point" keyField="id">
                                 <Column name="Incomes"
-                                    colorIndex={9}
-                                    width={0.3}
-                                    offset={-0.15}
-                                    x={bind("$point.id")}
+                                    colorIndex={8}
+                                    width={0.4}
+                                    offset={-0.2}
+                                    x={bind("$point.label")}
                                     y={bind("$point.amount")}
                                     tooltip={tpl("{$point.amount:n;2}")}
                                 />
@@ -193,15 +203,17 @@ export default <cx>
                             <Repeater records={bind("$page.histogramTotal")} recordName="$point" keyField="id">
                                 <Column name="Expenses"
                                     colorIndex={0}
-                                    width={0.3}
-                                    offset={0.15}
-                                    x={bind("$point.id")}
+                                    width={0.4}
+                                    offset={0.2}
+                                    x={bind("$point.label")}
                                     y={bind("$point.amount")}
                                     tooltip={tpl("{$point.amount:n;2}")}
                                 />
                             </Repeater>
                         </Chart>
                     </Svg>
+                    <Legend />
+                    </Legend.Scope>
                     
                 </div>
             </Section>

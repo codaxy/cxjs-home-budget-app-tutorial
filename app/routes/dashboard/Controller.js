@@ -33,7 +33,24 @@ export default class extends Controller {
             this.store.set('$page.entries', filteredEntries);
         }, true);
 
-        this.addComputable('$page.pie', ['$page.expenses'], entries => {
+        this.addComputable('$page.expensesPie', ['$page.expenses'], entries => {
+            let category = {};
+            if (entries) {
+                entries.forEach(e => {
+                    let cat = category[e.categoryId];
+                    if (!cat)
+                        cat = category[e.categoryId] = {
+                            id: e.categoryId,
+                            name: categoryNames[e.categoryId],
+                            amount: 0
+                        };
+                    cat.amount += e.amount;
+                });
+            }
+            return Object.keys(category).map(k => category[k]);
+        });
+
+        this.addComputable('$page.incomesPie', ['$page.incomes'], entries => {
             let category = {};
             if (entries) {
                 entries.forEach(e => {
@@ -153,13 +170,16 @@ function getMonthsMap(range, catId) {
     while (true) {
         if(month >= to)
             break;
-        id = month.toLocaleString('en-us', { month: "short" }) + month.getFullYear();
+        let monthName = month.toLocaleString('en-us', { month: "short" })
+        let year = month.getFullYear();
+        let id = `${monthName}${year}`
         numOfDays = new Date(month.getFullYear(), month.getMonth()+1, 0).getDate();
         months[id] = {
             id,
             date: new Date(month),
             amount: 0,
             width: numOfDays * 24 * 60 * 60 * 1000,
+            label: `${monthName} ${year}`
         };
         if (catId) months[id].categoryName = categoryNames[catId];
         month.setMonth(month.getMonth() + 1);
