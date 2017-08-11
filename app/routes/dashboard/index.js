@@ -1,4 +1,4 @@
-import {HtmlElement, Section, FlexRow, Repeater, FlexCol, Text, MonthField, Tab} from 'cx/widgets';
+import {HtmlElement, Section, FlexRow, Repeater, FlexCol, Text, MonthField, LinkButton, Button} from 'cx/widgets';
 import {
     CategoryAxis,
     Chart,
@@ -23,9 +23,24 @@ export default <cx>
     <h2 putInto="header">Dashboard</h2>
     <div controller={Controller} class="cxb-dashboard">
         <Section mod="card">
-            <Tab tab="balance" value={bind("$page.tab")} mod="line">Balance</Tab>
-            <Tab tab="expenses" value={bind("$page.tab")} mod="line">Expenses</Tab>
-            <Tab tab="incomes" value={bind("$page.tab")} mod="line">Incomes</Tab>   
+            <LinkButton
+                mod="hollow"
+                href={"~/dashboard/balance"}
+                url={{bind: "url"}}
+                text="Balance"
+            />
+            <LinkButton
+                mod="hollow"
+                href={"~/dashboard/expenses"}
+                url={{bind: "url"}}
+                text="Expenses"
+            />
+            <LinkButton
+                mod="hollow"
+                href={"~/dashboard/incomes"}
+                url={{bind: "url"}}
+                text="Incomes"
+            />
             <div layout={LabelsLeftLayout} style="display: inline-block;">
                 <MonthField style="min-width: 192px; margin-top: 0;"
                     range 
@@ -80,9 +95,8 @@ export default <cx>
 
             <Section
                 mod="card"
-                header={
-                    <h3 text={computable('$page.selectedCatId', catId => categoryNames[catId] || 'All')}/>
-                }
+                title={computable('$page.selectedCatId', catId => categoryNames[catId] || 'All')}
+                hLevel={3}
                 style="max-height: 400px"
             >
                 <div>
@@ -113,10 +127,15 @@ export default <cx>
                 </div>
             </Section>
 
-            <Section mod="card" header={<h3>Monthly overview</h3>} style="min-width: 274px">
-                <div >
+            <Section mod="card" 
+                title="Monthly overview"
+                hLevel={3}
+                style="min-width: 274px"
+                //footer={<Button>See logs</Button>}
+                >
+                <FlexCol >
                     <Svg style={{
-                            minWidth: {expr: "40 + {$page.histogramTotal.length} * 25"},
+                            minWidth: {expr: "40 + {$page.histogram.length} * 25"},
                             height: '100%'
                         }}>
                         <Chart
@@ -124,13 +143,13 @@ export default <cx>
                             axes={{x: <TimeAxis />, y: <NumericAxis vertical/>}}
                         >
                             <Gridlines xAxis={false}/>
-                            <Repeater records={bind("$page.histogramTotal")} recordName="$point" keyField="id">
+                            <Repeater records={bind("$page.histogram")} recordName="$point" keyField="id">
                                 <Column
                                     width={bind('$point.width')}
                                     offset={expr("{$point.width}/2")}
                                     x={bind("$point.date")}
-                                    y={bind("$point.amount")}
-                                    tooltip={tpl("{$point.amount:n;2}")}
+                                    y={bind("$point.total")}
+                                    tooltip={tpl("{$point.total:n;2}")}
                                 />
                             </Repeater>
                             <Repeater records={bind("$page.histogram")} recordName="$point" keyField="id">
@@ -138,35 +157,41 @@ export default <cx>
                                     width={bind('$point.width')}
                                     offset={expr("{$point.width}/2")}
                                     x={bind("$point.date")}
-                                    y={bind("$point.amount")}
-                                    tooltip={tpl("{$point.amount:n;2}")}
+                                    y={bind("$point.subCategory")}
+                                    tooltip={tpl("{$point.subCategory:n;2}")}
                                     colorName={bind("$point.categoryName")}
                                     colorMap="pie"/>
                             </Repeater>
                         </Chart>
-                    </Svg>
-                </div>
+                    </Svg>                    
+                </FlexCol>
             </Section>
 
-            <Section mod="card" header={<h3>Total</h3>}>
+            <Section mod="card" 
+                title="Total"
+                hLevel={3}>
                 <div class="kpi-main">
                     <div>Expenses</div>
                     <div class="kpi-value">
                         
-                        <Text tpl='${$page.expensesTotal:n;2}'/>
+                        <Text tpl='${$page.total:n;2}'/>
                     </div>
-                    <div style="margin-top: 20px;">Incomes</div>
+                    {/*<div style="margin-top: 20px;">Incomes</div>
                     <div class="kpi-value">
                         <Text tpl='${$page.incomesTotal:n;2}'/>
                     </div>
                     <div style="margin-top: 20px;">Balance</div>
                     <div class="kpi-value">
                         <Text tpl='${$page.balance:n;2}'/>
-                    </div>
+                    </div>*/}
                 </div>
             </Section>
 
-            <Section mod="card" header={<h3>Balance</h3>}>
+
+            {/*
+            <Section mod="card"
+                title="Balance"
+                hLevel={3}>
                 <div style="width: 450px; height: 300px;">
                     <Svg style="width: 100%;">
                         <Chart offset="20 -20 -20 50" axes={{ x: { type: TimeAxis }, y: { type: NumericAxis, vertical: true }}}>
@@ -175,15 +200,19 @@ export default <cx>
                                 data={bind('$page.balanceData')}
                                 xField='date'
                                 yField='value'
-                                colorIndex={0}
+                                colorIndex={expr("{$page.balance} > 0 ? 7 : 0")}
                                 area
                             />
+                            
                         </Chart>
                     </Svg>
                 </div>
             </Section>
 
-            <Section mod="card" header={<h3>Incomes vs Expenses</h3>} style="min-width: 274px">
+            <Section mod="card" 
+                title="Incomes vs Expenses"
+                hLevel={3}
+                style="min-width: 274px">
                 <div style="max-width: 550px;">
                     <Legend.Scope>
                     <Svg style={{
@@ -211,7 +240,7 @@ export default <cx>
                                     width={0.4}
                                     offset={0.2}
                                     x={bind("$point.label")}
-                                    y={bind("$point.amount")}
+                                    y={expr("{$point.amount}")}
                                     tooltip={tpl("{$point.amount:n;2}")}
                                 />
                             </Repeater>
@@ -219,10 +248,9 @@ export default <cx>
                     </Svg>
                     <Legend />
                     </Legend.Scope>
-                    
                 </div>
             </Section>
-
+            */}
         </FlexRow>
     </div>
 </cx>

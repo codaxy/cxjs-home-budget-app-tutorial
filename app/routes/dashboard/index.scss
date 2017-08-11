@@ -54,6 +54,9 @@
 .cxb-dashboard {
    position: relative;
    height: 100%;
+   .cxs-active {
+      border-bottom: 2px solid orange;
+   }
 }
 
 .cxe-dashboard-toolbar {
