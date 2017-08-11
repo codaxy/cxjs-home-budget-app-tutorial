@@ -4,7 +4,7 @@ import {categoryNames, subCategoryNames} from '../../data/categories';
 
 export default class extends Controller {
     onInit() {
-        //this.store.init('$page.selectedCatId', 'cat1');
+        let tab = this.store.get('$route.type');
         // get range for current year
         let currentYear = new Date().getFullYear();
         this.store.init('$page.range', {
@@ -12,7 +12,7 @@ export default class extends Controller {
             to: new Date(`${currentYear+1}-01-01`).toISOString()
         });
 
-        this.store.init('$page.tab', 'balance');
+        this.store.init('$page.tab', tab);
 
         this.addTrigger('entries', ['entries', '$page.range'], (entries, range) => {
             let from = new Date(range.from);
@@ -34,23 +34,6 @@ export default class extends Controller {
             this.store.set('$page.expenses', expenses);
             this.store.set('$page.entries', filteredEntries);
         }, true);
-
-        this.addComputable('$page.expensesPie', ['$page.expenses'], entries => {
-            let category = {};
-            if (entries) {
-                entries.forEach(e => {
-                    let cat = category[e.categoryId];
-                    if (!cat)
-                        cat = category[e.categoryId] = {
-                            id: e.categoryId,
-                            name: categoryNames[e.categoryId],
-                            amount: 0
-                        };
-                    cat.amount += e.amount;
-                });
-            }
-            return Object.keys(category).map(k => category[k]);
-        });
 
         this.addComputable('$page.pie', ['$page.expenses', '$page.incomes', '$page.tab'], (expenses, incomes, tab) => {
             let entries = tab === "incomes" ? incomes : expenses;
