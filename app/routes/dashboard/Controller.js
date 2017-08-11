@@ -7,7 +7,7 @@ export default class extends Controller {
         let tab = this.store.get('$route.type');
         // get range for current year
         let currentYear = new Date().getFullYear();
-        this.store.init('$page.range', {
+        this.store.init('range', {
             from: new Date(currentYear, 0, 1).toISOString(),
             to: new Date(currentYear + 1, 0, 1).toISOString()
         });
@@ -18,7 +18,7 @@ export default class extends Controller {
             History.pushState({}, null, `~/dashboard/${tab}`);
         });
 
-        this.addComputable('$page.entries', ['entries', '$page.range'], (entries, range) => {
+        this.addComputable('$page.entries', ['entries', 'range'], (entries, range) => {
             let from = new Date(range.from);
             let to = new Date(range.to);
 
@@ -32,7 +32,7 @@ export default class extends Controller {
             });
         });
 
-        // this.addTrigger('entries', ['entries', '$page.range'], (entries, range) => {
+        // this.addTrigger('entries', ['entries', 'range'], (entries, range) => {
         //     let from = new Date(range.from);
         //     let to = new Date(range.to);
 
@@ -95,7 +95,7 @@ export default class extends Controller {
         });
 
         // Expenses per month over time
-        this.addComputable('$page.histogram', ['$page.entries', '$page.selectedCatId', '$page.range'], (entries, catId, range) => {
+        this.addComputable('$page.histogram', ['$page.entries', '$page.selectedCatId', 'range'], (entries, catId, range) => {
             let months = (entries || [])
                 .reduce((monthsMap, e) => toMonthly(monthsMap, e, catId), getMonthsMap(range, catId));
             return Object.keys(months).map(k => months[k]);
@@ -103,7 +103,7 @@ export default class extends Controller {
 
         // BALANCE
         // Balance per day over time
-        // this.addTrigger('balanceData', ['entries', '$page.range'], (entries, range) => {
+        // this.addTrigger('balanceData', ['entries', 'range'], (entries, range) => {
         //     let {from, to} = range;
         //     let balanceData = [...(entries || [])]
         //         .sort((a,b) => a.date > b.date ? 1 : -1)

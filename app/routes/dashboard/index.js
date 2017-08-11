@@ -47,8 +47,8 @@ export default <cx>
                 range
                 placeholder="Period"
                 labelPlacement={null}
-                from={bind('$page.range.from')}
-                to={bind('$page.range.to')}
+                from={bind('range.from')}
+                to={bind('range.to')}
                 showClear={false}/>
             </FlexRow>
 
