@@ -62,5 +62,19 @@ export default class extends Controller {
             (balance, incomesTotal, expensesTotal) => {
                 return balance - incomesTotal + expensesTotal
             });
+
+        // Total expenses per month over time
+        this.addComputable('$page.histogram.expenses', ['$page.expenses', 'range'], (entries, range) => {
+            let months = (entries || [])
+                .reduce(toMonthly, getMonthsMap(range));
+            return Object.keys(months).map(k => months[k]);
+        });
+
+        // Total incomes per month over time
+        this.addComputable('$page.histogram.incomes', ['$page.incomes', 'range'], (entries, range) => {
+            let months = (entries || [])
+                .reduce(toMonthly, getMonthsMap(range));
+            return Object.keys(months).map(k => months[k]);
+        });
     }
 }

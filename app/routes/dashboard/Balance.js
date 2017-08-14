@@ -71,7 +71,7 @@ export default () => <cx>
             <div style="max-width: 550px;">
                 <Legend.Scope>
                     <Svg style={{
-                        minWidth: { expr: "40 + {$page.incomeHistogramTotal.length} * 40" },
+                        minWidth: { expr: "40 + {$page.histogram.incomes.length} * 40" },
                         height: '100%'
                     }}>
                         <Chart
@@ -79,24 +79,24 @@ export default () => <cx>
                             axes={{ x: <CategoryAxis labelRotation={-45} labelOffset={5} labelAnchor="end" />, y: <NumericAxis vertical /> }}
                         >
                             <Gridlines xAxis={false} />
-                            <Repeater records={bind("$page.incomeHistogramTotal")} recordName="$point" keyField="id">
+                            <Repeater records={bind("$page.histogram.incomes")} recordName="$point" keyField="id">
                                 <Column name="Incomes"
                                     colorIndex={8}
                                     width={0.4}
                                     offset={-0.2}
                                     x={bind("$point.label")}
-                                    y={bind("$point.amount")}
-                                    tooltip={tpl("{$point.amount:n;2}")}
+                                    y={bind("$point.total")}
+                                    tooltip={tpl("{$point.total:n;2}")}
                                 />
                             </Repeater>
-                            <Repeater records={bind("$page.histogramTotal")} recordName="$point" keyField="id">
+                            <Repeater records={bind("$page.histogram.expenses")} recordName="$point" keyField="id">
                                 <Column name="Expenses"
                                     colorIndex={0}
                                     width={0.4}
                                     offset={0.2}
                                     x={bind("$point.label")}
-                                    y={expr("{$point.amount}")}
-                                    tooltip={tpl("{$point.amount:n;2}")}
+                                    y={expr("{$point.total}")}
+                                    tooltip={tpl("{$point.total:n;2}")}
                                 />
                             </Repeater>
                         </Chart>

@@ -11,4 +11,8 @@ export default class extends Controller {
          to: new Date(currentYear + 1, 0, 1).toISOString()
       });
    }
+
+   clearSelection() {
+      this.store.delete('$page.selectedCatId');
+   }
 }

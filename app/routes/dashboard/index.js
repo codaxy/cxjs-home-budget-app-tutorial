@@ -1,4 +1,4 @@
-import {HtmlElement, Section, FlexRow, MonthField, LinkButton} from 'cx/widgets';
+import { HtmlElement, Section, FlexRow, MonthField, LinkButton, Button } from 'cx/widgets';
 import { bind, expr, FirstVisibleChildLayout } from "cx/ui";
 import Controller from './Controller';
 import Entries from './Entries';
@@ -9,35 +9,42 @@ export default <cx>
     <div class="cxb-dashboard" controller={Controller}>
         <Section mod="card">
             <FlexRow>
-            <LinkButton
-                mod="hollow"
-                href={"~/dashboard/balance"}
-                url={{bind: "url"}}
-                text="Balance"
-            />
-            <LinkButton
-                mod="hollow"
-                href={"~/dashboard/expenses"}
-                url={{bind: "url"}}
-                text="Expenses"
-            />
-            <LinkButton
-                mod="hollow"
-                href={"~/dashboard/incomes"}
-                url={{bind: "url"}}
-                text="Incomes"
-            />
-            <MonthField style="min-width: 192px; vertical-align: top; margin-left: auto"
-                range
-                placeholder="Period"
-                labelPlacement={null}
-                from={bind('range.from')}
-                to={bind('range.to')}
-                showClear={false}/>
+                <LinkButton
+                    mod="hollow"
+                    href={"~/dashboard/balance"}
+                    url={{ bind: "url" }}
+                    text="Balance"
+                />
+                <LinkButton
+                    mod="hollow"
+                    href={"~/dashboard/expenses"}
+                    url={{ bind: "url" }}
+                    text="Expenses"
+                />
+                <LinkButton
+                    mod="hollow"
+                    href={"~/dashboard/incomes"}
+                    url={{ bind: "url" }}
+                    text="Incomes"
+                />
+                <div style="flex: 1;" />
+                <Button 
+                    mod='hollow'
+                    text="Show all subcategories"
+                    if={expr('{$route.type} !== "balance"')}
+                    onClick='clearSelection'
+                    disabled={expr("!{$page.selectedCatId}")} />
+                <MonthField style="min-width: 192px; vertical-align: top;"
+                    range
+                    placeholder="Period"
+                    labelPlacement={null}
+                    from={bind('range.from')}
+                    to={bind('range.to')}
+                    showClear={false} />
             </FlexRow>
         </Section>
         <FlexRow wrap spacing class="cxe-dashboard-main" layout={FirstVisibleChildLayout}>
-            <Balance if={expr("{$route.type} === 'balance'")}  />
+            <Balance if={expr("{$route.type} === 'balance'")} />
             <Entries />
         </FlexRow>
     </div>
