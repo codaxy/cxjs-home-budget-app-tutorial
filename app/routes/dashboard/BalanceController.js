@@ -1,66 +1,60 @@
 import { Controller } from 'cx/ui';
-
-import {categoryNames, subCategoryNames} from '../../data/categories';
+import { categoryNames, subCategoryNames } from '../../data/categories';
+import { entriesSum, toMonthly, getMonthsMap } from './util';
 
 export default class extends Controller {
     onInit() {
-        let tab = this.store.get('$route.type');
-        // get range for current year
-        let currentYear = new Date().getFullYear();
-        this.store.init('range', {
-            from: new Date(currentYear, 0, 1).toISOString(),
-            to: new Date(currentYear + 1, 0, 1).toISOString()
+
+        this.addTrigger('$page', ['entries', 'range'], (entries, range) => {
+            let from = new Date(range.from);
+            let to = new Date(range.to);
+
+            let incomes = [], expenses = [], filteredEntries = [];
+            (entries || []).forEach(e => {
+                let date = new Date(e.date);
+                if (date < from || date >= to)
+                    return;
+                filteredEntries.push(e);
+                if (e.categoryId.includes('inc'))
+                    incomes.push(e);
+                else expenses.push(e);
+            });
+            this.store.update('$page', data => ({ ...data, incomes, expenses, entries: filteredEntries }));
         });
 
-        
-    }
-}
+        // get totals 
+        this.addComputable('$page.expensesTotal', ['$page.expenses'], entriesSum);
+        this.addComputable('$page.incomesTotal', ['$page.incomes'], entriesSum);
 
-// reducers
-function entriesSum(entries) {
-    if (entries) {
-        return entries.reduce((sum, e) => sum + e.amount, 0);
-    }
-    return 0;
-}
+        // BALANCE
+        // Balance per day over time
+        this.addComputable('$page.balanceData', ['entries', 'range'], (entries, range) => {
+            let { from, to } = range;
+            return (entries || [])
+                .sort((a, b) => a.date > b.date ? 1 : -1)
+                .reduce((acc, e) => {
+                    let length = acc.length
+                    let balance = length > 0 ? acc[length - 1].value : 0;
+                    let incr = e.categoryId.includes('exp') ? -e.amount : e.amount;
+                    balance += incr;
+                    acc.push({
+                        date: e.date,
+                        value: balance,
+                    });
+                    return acc;
+                }, [])
+                .filter(e => e.date >= from && e.date < to);
+        });
 
-function toMonthly(months, e, catId) {
-    let date = new Date(e.date);
-    let month = date.toLocaleString('en-us', { month: "short" })
-    let year = date.getFullYear();
-    let id = `${month}${year}`
-    let cat = months[id];
-    if (cat) {
-        cat.total += e.amount;
-        cat.subCategory += e.categoryId === catId ? e.amount : 0;
-    }
-    return months;
-}
+        this.addComputable('$page.balance', ['$page.balanceData'], balanceData => {
+            // get current balance
+            let balance = balanceData.slice(-1).pop();
+            return (balance && balance.value) ? balance.value : 0;
+        });
 
-// Histogram months map
-function getMonthsMap(range, catId) {
-    let from = new Date(range.from);
-    let to = new Date(range.to);
-    let months = {};
-    let month = new Date(from);
-    let id, numOfDays;
-    while (true) {
-        if(month >= to)
-            break;
-        let monthName = month.toLocaleString('en-us', { month: "short" })
-        let year = month.getFullYear();
-        let id = `${monthName}${year}`
-        numOfDays = new Date(month.getFullYear(), month.getMonth()+1, 0).getDate();
-        months[id] = {
-            id,
-            date: new Date(month),
-            total: 0,
-            subCategory: 0,
-            width: numOfDays * 24 * 60 * 60 * 1000,
-            label: `${monthName} ${year}`
-        };
-        if (catId) months[id].categoryName = categoryNames[catId];
-        month.setMonth(month.getMonth() + 1);
+        this.addComputable('$page.prevBalance', ['$page.balance', '$page.incomesTotal', '$page.expensesTotal'], 
+            (balance, incomesTotal, expensesTotal) => {
+                return balance - incomesTotal + expensesTotal
+            });
     }
-    return months;
 }

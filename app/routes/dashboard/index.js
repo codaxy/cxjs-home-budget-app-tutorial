@@ -1,7 +1,8 @@
 import {HtmlElement, Section, FlexRow, MonthField, LinkButton} from 'cx/widgets';
-import { bind } from "cx/ui";
+import { bind, expr, FirstVisibleChildLayout } from "cx/ui";
 import Controller from './Controller';
 import Entries from './Entries';
+import Balance from './Balance';
 
 export default <cx>
     <h2 putInto="header">Dashboard</h2>
@@ -35,7 +36,8 @@ export default <cx>
                 showClear={false}/>
             </FlexRow>
         </Section>
-        <FlexRow wrap spacing class="cxe-dashboard-main">
+        <FlexRow wrap spacing class="cxe-dashboard-main" layout={FirstVisibleChildLayout}>
+            <Balance if={expr("{$route.type} === 'balance'")}  />
             <Entries />
         </FlexRow>
     </div>

@@ -1,4 +1,4 @@
-import { PureContainer } from 'cx/widgets';
+import { PureContainer, Section, Repeater, Text } from 'cx/widgets';
 import {
     CategoryAxis,
     Chart,
@@ -20,25 +20,29 @@ import { KeySelection, tpl, bind, expr, computable, LabelsLeftLayout } from "cx/
 import { categoryNames, subCategoryNames } from '../../data/categories';
 import Controller from './BalanceController';
 
-export default <cx>
+export default () => <cx>
     <PureContainer controller={Controller} >
         <Section mod="card"
-            title="Total"
+            title="Balance"
             hLevel={3}>
-            <div class="kpi-main">
-                <div class="kpi-value">
 
-                    <Text tpl='${$page.total:n;2}' />
-                </div>
-                <div style="margin-top: 20px;">Incomes</div>
-                <div class="kpi-value">
-                    <Text tpl='${$page.incomesTotal:n;2}' />
-                </div>
-                <div style="margin-top: 20px;">Balance</div>
-                <div class="kpi-value">
-                    <Text tpl='${$page.balance:n;2}' />
-                </div>
+            <div>Previous balance</div>
+            <div class="kpi-value">
+                <Text tpl='${$page.prevBalance:n;2}' />
             </div>
+            <div style="margin-top: 20px;">Incomes</div>
+            <div class="kpi-value">
+                <Text tpl='${$page.incomesTotal:n;2}' />
+            </div>
+            <div style="margin-top: 20px;">Expenses</div>
+            <div class="kpi-value">
+                <Text tpl='${$page.expensesTotal:n;2}' />
+            </div>
+            <div style="margin-top: 20px;">Current balance</div>
+            <div class="kpi-value">
+                <Text tpl='${$page.balance:n;2}' />
+            </div>
+
         </Section>
 
         <Section mod="card"
@@ -55,7 +59,6 @@ export default <cx>
                             colorIndex={expr("{$page.balance} > 0 ? 7 : 0")}
                             area
                         />
-
                     </Chart>
                 </Svg>
             </div>
