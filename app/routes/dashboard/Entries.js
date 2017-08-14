@@ -15,7 +15,7 @@ import {
 } from "cx/charts";
 
 import { Svg, Text as SvgText } from "cx/svg";
-import {KeySelection, tpl, bind, expr, computable, LabelsLeftLayout} from "cx/ui";
+import { KeySelection, tpl, bind, expr, computable, LabelsLeftLayout } from "cx/ui";
 
 import { categoryNames, subCategoryNames } from '../../data/categories';
 import Controller from './EntriesController';
@@ -147,19 +147,8 @@ export default <cx>
         <Section mod="card"
             title="Total"
             hLevel={3}>
-            <div class="kpi-main">
-                <div>Expenses</div>
-                <div class="kpi-value">
-                    <Text tpl='${$page.total:n;2}' />
-                </div>
-                <div style="margin-top: 20px;">Incomes</div>
-                <div class="kpi-value">
-                    <Text tpl='${$page.incomesTotal:n;2}' />
-                </div>
-                <div style="margin-top: 20px;">Balance</div>
-                <div class="kpi-value">
-                    <Text tpl='${$page.balance:n;2}' />
-                </div>
+            <div class="kpi-value">
+                <Text tpl='${$page.total:n;2}' />
             </div>
         </Section>
     </PureContainer>
