@@ -19,8 +19,14 @@ export default class extends Controller {
                     incomes.push(e);
                 else expenses.push(e);
             });
-            this.store.update('$page', data => ({ ...data, incomes, expenses, entries: filteredEntries }));
-        });
+            this.store.update('$page', data => {
+                data = {...data}
+                data.incomes = incomes;
+                data.expenses = expenses;
+                data.entries = filteredEntries;
+                return data;
+            });
+        }, true);
 
         // get totals 
         this.addComputable('$page.expensesTotal', ['$page.expenses'], entriesSum);
