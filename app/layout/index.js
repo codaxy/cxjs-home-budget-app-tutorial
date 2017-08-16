@@ -1,6 +1,7 @@
 import {HtmlElement, Link, Button} from 'cx/widgets';
 import {ContentPlaceholder} from 'cx/ui';
 import Controller from "./Controller";
+import UserAccount from "./UserAccount";
 
 export default <cx>
    <div
@@ -24,6 +25,8 @@ export default <cx>
             }}
          />
          <ContentPlaceholder name="header"/>
+         <div style="flex: 1;" />
+         <UserAccount />
       </header>
       <aside class="aside">
          <h1>Cx App</h1>
