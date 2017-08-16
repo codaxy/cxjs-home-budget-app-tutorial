@@ -7,7 +7,8 @@ $small-device-width: 800px;
 }
 
 .header {
-   padding: 0.7em;
+   padding: 10px;
+   min-height: 40px;
    background: $header-color;
    position: fixed;
    transition: all 0.2s linear;
@@ -17,6 +18,10 @@ $small-device-width: 800px;
    box-shadow: 3px 2px 5px rgba(0,0,0,.26);
    display: flex;
    align-items: center;
+
+   & > a {
+       color: white;
+   }
 
    h2 {
       line-height: 1;

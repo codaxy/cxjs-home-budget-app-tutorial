@@ -35,6 +35,9 @@ export default <cx>
             <Route route="~/dashboard/:type" url={bind("url")}>
                 <Dashboard />
             </Route>
+            <Route route="~/sign-in" url={bind("url")}>
+                <SignRoute />
+            </Route>
             <Section title="Page Not Found" mod="card">
                 This page doesn't exists. Please check your URL.
             </Section>

@@ -5,7 +5,7 @@ import Controller from './Controller';
 
 export default () => <cx>
 	<div class="center" controller={Controller} >
-		<Section title="Sign In" visible={expr("!{$root.user}")}>
+		<Section title="Sign In" visible={expr("!{user.id}")}>
 			<p>
 				Please sign in using one of the available authentication providers.
 			</p>
@@ -21,9 +21,9 @@ export default () => <cx>
 			</p>
 		</Section>
 
-		<Section title="User Info" visible={expr("!!{$root.user}")} ws>
+		<Section title="User Info" visible={expr("!!{user.id}")} ws>
 			<p ws>
-				You're signed in as <Text tpl="{$root.user.displayName}{$root.user.email:wrap; (;)}" />.
+				You're signed in as <Text tpl="{user.displayName}{user.email:wrap; (;)}" />.
 			</p>
 
 			<Button onClick="signOut" mod="hollow">
