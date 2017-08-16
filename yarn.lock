@@ -1453,9 +1453,9 @@ cx-theme-material@^17.8.0:
   version "17.8.0"
   resolved "https://registry.yarnpkg.com/cx-theme-material/-/cx-theme-material-17.8.0.tgz#d974e85087c511e805b0c052c743878a8fae60cb"
 
-cx@^17.8.7:
-  version "17.8.7"
-  resolved "https://registry.yarnpkg.com/cx/-/cx-17.8.7.tgz#734e24d2d25c2ab0cc710a622750468d94c2196c"
+cx@^17.8.8:
+  version "17.8.8"
+  resolved "https://registry.yarnpkg.com/cx/-/cx-17.8.8.tgz#3f9842acf2b3bee6edc5febb5e6e3548d3d48318"
   dependencies:
     intl-io "^0.2.5"
     route-parser "^0.0.5"
