@@ -1,10 +1,12 @@
-import { HtmlElement, Section, FlexRow, MonthField, LinkButton, Button } from 'cx/widgets';
+import { HtmlElement, Section, FlexRow, MonthField, LinkButton, Button, Route, RedirectRoute } from 'cx/widgets';
 import { bind, expr, FirstVisibleChildLayout } from "cx/ui";
 import Controller from './Controller';
 import Entries from './Entries';
 import Balance from './Balance';
 
 export default <cx>
+    <Route route="~/dashboard(*splat)" url={bind("url")}>
+    <RedirectRoute route="~/dashboard" url={bind("url")} redirect="~/dashboard/balance" />
     <h2 putInto="header">Dashboard</h2>
     <div class="cxb-dashboard" controller={Controller}>
         <Section mod="card">
@@ -48,4 +50,5 @@ export default <cx>
             <Entries />
         </FlexRow>
     </div>
+    </Route>
 </cx>
