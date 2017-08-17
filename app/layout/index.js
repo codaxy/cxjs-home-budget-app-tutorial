@@ -1,5 +1,5 @@
 import {HtmlElement, Link, Button} from 'cx/widgets';
-import {ContentPlaceholder} from 'cx/ui';
+import {ContentPlaceholder, bind} from 'cx/ui';
 import Controller from "./Controller";
 import UserAccount from "./UserAccount";
 
@@ -35,18 +35,18 @@ export default <cx>
                Budget
             </dt>
             <dd>
-               <Link href="~/dashboard/balance" url:bind="url">
+               <Link href="~/dashboard" match="prefix" url={bind("url")}>
                   Dashboard
                </Link>
-               <Link href="~/entry/expense" url:bind="url">
+               <Link href="~/entry/expense" url={bind("url")}>
                   Add Expense
                </Link>
-               <Link href="~/entry/income" url:bind="url">
+               <Link href="~/entry/income" url={bind("url")}>
                   Add Income
                </Link>
             </dd>
             <dd>
-               <Link href="~/log" url:bind="url">
+               <Link href="~/log" url={bind("url")}>
                   Log
                </Link>
                <ContentPlaceholder name="sidebar"/>

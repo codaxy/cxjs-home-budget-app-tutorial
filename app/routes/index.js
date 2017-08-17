@@ -32,9 +32,7 @@ export default <cx>
             <Route route="~/log" url={bind("url")}>
                 <Log />
             </Route>
-            <Route route="~/dashboard/:type" url={bind("url")}>
-                <Dashboard />
-            </Route>
+            <Dashboard />
             <Route route="~/sign-in" url={bind("url")}>
                 <SignRoute />
             </Route>
