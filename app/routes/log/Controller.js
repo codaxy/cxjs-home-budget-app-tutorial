@@ -22,6 +22,7 @@ export default class extends Controller {
         for (let i = 0; i < N; i++) {
             let subCategory = expenseSubCategories[Math.floor(Math.random() * expenseSubCategories.length)];
             newEntries.push({
+                id: uuid(),
                 subCategoryId: subCategory.id,
                 categoryId: subCategory.catId,
                 amount: Number((100 * (0.5 + Math.random())).toFixed(2)),

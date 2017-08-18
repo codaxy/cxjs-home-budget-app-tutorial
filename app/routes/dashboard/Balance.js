@@ -28,19 +28,19 @@ export default () => <cx>
 
             <div>Previous balance</div>
             <div class="kpi-value">
-                <Text tpl='${$page.prevBalance:n;2}' />
+                <Text tpl='{$page.prevBalance:currency;USD;2}' />
             </div>
             <div style="margin-top: 20px;">Incomes</div>
             <div class="kpi-value">
-                <Text tpl='${$page.incomesTotal:n;2}' />
+                <Text tpl='${$page.incomesTotal:currency;;2}' />
             </div>
             <div style="margin-top: 20px;">Expenses</div>
             <div class="kpi-value">
-                <Text tpl='${$page.expensesTotal:n;2}' />
+                <Text tpl='${$page.expensesTotal:currency;;2}' />
             </div>
             <div style="margin-top: 20px;">Current balance</div>
             <div class="kpi-value">
-                <Text tpl='${$page.balance:n;2}' />
+                <Text tpl='${$page.balance:currency;;2}' />
             </div>
 
         </Section>
