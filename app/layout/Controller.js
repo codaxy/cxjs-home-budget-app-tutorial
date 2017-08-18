@@ -12,7 +12,7 @@ export default class extends Controller {
             });
 
             // get active budget
-            let activeBudgetId = UIState.get('activeBudgetId');
+            let activeBudgetId = UIState.get('activeBudgetId') || "demo";
             this.store.set('activeBudgetId', activeBudgetId);
             // load entries
             this.store.set('entries', UIState.get(activeBudgetId) || []);
