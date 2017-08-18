@@ -16,17 +16,18 @@ export default class extends Controller {
             (entries || []).forEach(e => {
                 if (e.date < from) {
                     prevBalance += e.type == 'income' ? e.amount : -e.amount;
+                    return;
                 }
 
                 if (e.date >= to)
                     return;
 
                 filteredEntries.push(e);
+                
                 if (e.type=='income') {
                     incomes.push(e);
                     incomesTotal += e.amount;
-                }
-                else {
+                } else {
                     expenses.push(e);
                     expensesTotal += e.amount;
                 }

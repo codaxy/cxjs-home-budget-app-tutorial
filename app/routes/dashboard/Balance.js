@@ -1,4 +1,4 @@
-import { PureContainer, Section, Repeater, Text } from 'cx/widgets';
+import { PureContainer, Section, Repeater, Text, Button } from 'cx/widgets';
 import {
     CategoryAxis,
     Chart,
@@ -28,21 +28,20 @@ export default () => <cx>
 
             <div>Previous balance</div>
             <div class="kpi-value">
-                <Text tpl='{$page.prevBalance:currency;USD;2}' />
+                <Text tpl='{$page.prevBalance:currency;;2}' />
             </div>
             <div style="margin-top: 20px;">Incomes</div>
             <div class="kpi-value">
-                <Text tpl='${$page.incomesTotal:currency;;2}' />
+                <Text tpl='{$page.incomesTotal:currency;;2}' />
             </div>
             <div style="margin-top: 20px;">Expenses</div>
             <div class="kpi-value">
-                <Text tpl='${$page.expensesTotal:currency;;2}' />
+                <Text tpl='{$page.expensesTotal:currency;;2}' />
             </div>
             <div style="margin-top: 20px;">Current balance</div>
             <div class="kpi-value">
-                <Text tpl='${$page.balance:currency;;2}' />
+                <Text tpl='{$page.balance:currency;;2}' />
             </div>
-
         </Section>
 
         <Section mod="card"

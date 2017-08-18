@@ -1,4 +1,4 @@
-import {HtmlElement, Link, Button} from 'cx/widgets';
+import {HtmlElement, Link, LookupField} from 'cx/widgets';
 import {ContentPlaceholder, bind} from 'cx/ui';
 import Controller from "./Controller";
 import UserAccount from "./UserAccount";
@@ -29,7 +29,7 @@ export default <cx>
          <UserAccount />
       </header>
       <aside class="aside">
-         <h1>Cx App</h1>
+         <h1>Home Budget</h1>
          <dl>
             <dt>
                Budget
@@ -44,11 +44,10 @@ export default <cx>
                <Link href="~/entry/income" url={bind("url")}>
                   Add Income
                </Link>
-            </dd>
-            <dd>
                <Link href="~/log" url={bind("url")}>
                   Log
                </Link>
+               <Link href="~/settings" url={bind("url")} text="Settings" />
                <ContentPlaceholder name="sidebar"/>
             </dd>
          </dl>

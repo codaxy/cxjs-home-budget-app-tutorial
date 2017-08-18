@@ -4,9 +4,8 @@ import { FirstVisibleChildLayout, bind, expr } from 'cx/ui'
 import AppLayout from '../layout';
 
 import Default from './default';
-import About from './about';
+import Settings from './settings';
 import Dashboard from './dashboard';
-import UserRoutes from './users';
 import Entry from './entry';
 import Log from './log';
 import SignRoute from './sign-in';
@@ -35,6 +34,9 @@ export default <cx>
             <Dashboard />
             <Route route="~/sign-in" url={bind("url")}>
                 <SignRoute />
+            </Route>
+            <Route route="~/settings" url={bind("url")}>
+                <Settings />
             </Route>
             <Section title="Page Not Found" mod="card">
                 This page doesn't exists. Please check your URL.

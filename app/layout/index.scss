@@ -52,6 +52,9 @@ $small-device-width: 800px;
    transform: translateX(-300px);
    transition: transform 0.2s linear;
 
+   display: flex;
+   flex-direction: column;
+
    .layout.nav & {
       transform: none;
    }

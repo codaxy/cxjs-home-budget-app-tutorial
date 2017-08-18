@@ -2,7 +2,7 @@ import {HtmlElement, Link, Section} from 'cx/widgets';
 
 export default <cx>
    <h2 putInto="header">
-      About
+      Settings
    </h2>
    <Section mod="well" title="Cx App">
       <p ws>
