@@ -26,6 +26,7 @@ export default class extends Controller {
                 subCategoryId: subCategory.id,
                 categoryId: subCategory.catId,
                 amount: Number((100 * (0.5 + Math.random())).toFixed(2)),
+                type: 'exp',
                 date: new Date(fromDate + Math.random() * (toDate - fromDate)).toISOString()
             })
         }

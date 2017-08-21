@@ -23,6 +23,7 @@ export default class extends Controller {
                     categoryId: catId,
                     label: sc.name,
                     amount: null,
+                    type: type,
                     id: uuid()
                 }));
 
@@ -60,14 +61,19 @@ export default class extends Controller {
         this.store.set('$page.activeCategoryId', store.get('$record.id'));
     }
 
+    // adds entries to the budget
     save() {
         let data = this.store.get('$page.entries');
         let date = this.store.get('$page.date');
         let until = this.store.get('$page.until');
+        const type = this.store.get('$route.type').substring(0,3);
+        const activeBudgetId = this.store.get('activeBudgetId');
 
+        let sum = 0;
         let entries = [];
         data.forEach(e => {
             if (e.amount > 0) {
+                sum += e.amount;
                 entries.push(generateEntryLog(e, date));
                 if (until) {
                     let repeat = this.store.get('$page.repeat');
@@ -76,11 +82,23 @@ export default class extends Controller {
             }
         });
 
+        sum = type == 'inc' ? sum : -sum;
+
+        this.store.update('budgets', budgets => {
+            budgets = budgets.map(budget => {
+                if (budget.id === activeBudgetId)
+                    budget = {...budget, balance: budget.balance + sum }
+                return budget;
+            });
+            return budgets;
+        })
+
         this.store.update('entries', append, ...entries);
 
         this.store.delete('$page.activeCategoryId');
     }
 
+    // adds another field to the form
     addEntry(e, {store}) {
         let index = store.get('$index');
         let record = store.get('$record');
@@ -143,6 +161,7 @@ function generateEntryLog(entry, date) {
         id: uuid(),
         subCategoryId: entry.subCategoryId,
         categoryId: entry.categoryId,
+        type: entry.type,
         amount: entry.amount,
         date: new Date(date).toISOString()
     }

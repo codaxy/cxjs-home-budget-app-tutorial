@@ -8,14 +8,19 @@ export default class extends Controller {
         this.addComputable('$page.entries', ['entries', 'range'], (entries, range) => {
             let from = new Date(range.from);
             let to = new Date(range.to);
-            let category = this.store.get('$route.type');
+            let type = this.store.get('$route.type').substring(0,3);
 
             return (entries || []).filter(e => {
+                
+                // filter by date
                 let date = new Date(e.date);
                 if (date < from || date >= to)
                     return false;
-                if (!category.includes(e.categoryId.substring(0, 3)))
+
+                // filter by type
+                if (e.type != type)
                     return false;
+                
                 return true;
             });
         });

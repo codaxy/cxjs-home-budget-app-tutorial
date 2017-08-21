@@ -15,7 +15,7 @@ export default class extends Controller {
             let incomes = [], expenses = [], filteredEntries = [];
             (entries || []).forEach(e => {
                 if (e.date < from) {
-                    prevBalance += e.type == 'income' ? e.amount : -e.amount;
+                    prevBalance += e.type == 'inc' ? e.amount : -e.amount;
                     return;
                 }
 
@@ -24,7 +24,7 @@ export default class extends Controller {
 
                 filteredEntries.push(e);
                 
-                if (e.type=='income') {
+                if (e.type=='inc') {
                     incomes.push(e);
                     incomesTotal += e.amount;
                 } else {
@@ -51,7 +51,7 @@ export default class extends Controller {
             return (entries || [])
                 .sort((a, b) => a.date > b.date ? 1 : -1)
                 .reduce((acc, e) => {
-                    balance += e.type == 'income' ? e.amount : -e.amount;
+                    balance += e.type == 'inc' ? e.amount : -e.amount;
                     acc.push({
                         date: e.date,
                         value: balance,

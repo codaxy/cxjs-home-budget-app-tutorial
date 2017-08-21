@@ -1,4 +1,4 @@
-import {HtmlElement, Grid, Button} from 'cx/widgets';
+import {HtmlElement, Grid, Button, Section} from 'cx/widgets';
 import {computable, bind} from 'cx/ui';
 
 import Controller from './Controller';
@@ -8,7 +8,7 @@ import {categoryNames, subCategoryNames} from '../../data/categories';
 import GeneratorDialog from './GeneratorDialog';
 
 export default <cx>
-    <div controller={Controller}>
+    <Section mod="card" div controller={Controller}>
         <Grid
             records:bind="entries"
             scrollable
@@ -48,5 +48,5 @@ export default <cx>
         <GeneratorDialog />
 
         <Button onClick={(e, {store}) => { store.toggle('$page.generator.visible')}}>Generate</Button>
-    </div>
+    </Section>
 </cx>

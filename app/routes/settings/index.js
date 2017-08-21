@@ -1,31 +1,53 @@
-import {HtmlElement, Link, Section} from 'cx/widgets';
+import { HtmlElement, Link, Section, FlexCol, FlexRow, Button, Grid, Repeater, Radio } from 'cx/widgets';
+import { Chart, Gridlines, Column, Legend, CategoryAxis, NumericAxis } from 'cx/charts';
+import { Svg } from 'cx/svg';
+import { bind, tpl, expr, KeySelection } from 'cx/ui';
+import Controller from './Controller';
 
 export default <cx>
-   <h2 putInto="header">
-      Settings
-   </h2>
-   <Section mod="well" title="Cx App">
-      <p ws>
-         This is an application generated using Cx CLI.
-         It's just a skeleton that provides a basic layout and a couple of demo pages.
-      </p>
-
-      <h6>Layout</h6>
-      <p ws>
-         This is a simple responsive layout with a side navigation that is initially closed on screens
-         less than a 1000px wide.
-      </p>
-
-      <h6>Dashboard Page</h6>
-      <p ws>
-         A really simple dashboard with hardcoded data. It's there just to remind you
-         that CxJS offers a nice charting package that can be used to build dashboards.
-      </p>
-
-      <h6>Users Page</h6>
-      <p ws>
-         A sample admin page demonstrating CRUD operations and search functionality.
-      </p>
-      <Link href="~/">Back</Link>
-   </Section>
-</cx>
+    <h2 putInto="header">
+        Settings
+    </h2>
+    <FlexCol spacing='large' controller={Controller}>
+        <Section mod="card" >
+            <Button mod="hollow" icon="add" onClick="onNewBudget">Add budget</Button>
+        </Section>
+        <FlexRow spacing='large'>
+            <Section mod="card" title="Budgets">
+                <Grid records={bind('budgets')}
+                    style="width: 450px;"
+                    columns={[
+                        {   
+                            header: "Active",
+                            items: <cx><Radio value={bind("activeBudgetId")} option={bind('$record.id')} /></cx>
+                        },
+                        { header: "Budget name", field: 'name', sortable: true },
+                        { header: 'Balance', field: 'balance', format: 'currency;;2', sortable: true }
+                    ]}
+                    selection={{type: KeySelection, bind:'activeBudgetId'}}
+                />
+            </Section>
+            <Section mod="card" title="Balances">
+                <Svg style={{
+                        maxWidth: expr('{budgets.length} * 120'),
+                        height: 400
+                    }}>
+                    <Chart offset="20 -20 -100 50" axes={{
+                        x: { type: CategoryAxis, labelRotation: -45, labelDy: '0.4em', labelAnchor: "end" },
+                        y: { type: NumericAxis, vertical: true }
+                    }}>
+                        <Gridlines xAxis={false}/>
+                        <Repeater records={bind("budgets")} recordName="$point">
+                            <Column colorIndex={expr("{$point.balance} >= 0 ? 7 : 0")}
+                                width={0.6}
+                                x={bind("$point.name")}
+                                y={bind("$point.balance")}
+                                tooltip={tpl("{$point.balance:currency;USD;2}")} />
+                        </Repeater>
+                    </Chart>
+                </Svg>
+                <Legend />
+            </Section>
+        </FlexRow>
+    </FlexCol>
+</cx >
