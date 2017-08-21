@@ -55,11 +55,11 @@
    position: relative;
    height: 100%;
    .cxs-active {
-      border-bottom: 2px solid #a73232;
+      border-bottom: 2px solid $header-color;
       border-radius: 0;
    }
    .cxm-hollow:hover {
-      border-color: #a73232;
+      border-color: $header-color;
    }
 }
 
