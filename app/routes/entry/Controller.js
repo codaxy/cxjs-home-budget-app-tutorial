@@ -67,7 +67,7 @@ export default class extends Controller {
         let date = this.store.get('$page.date');
         let until = this.store.get('$page.until');
         const type = this.store.get('$route.type').substring(0,3);
-        const activeBudgetId = this.store.get('activeBudgetId');
+        const activeBudget = this.store.get('activeBudget');
 
         let sum = 0;
         let entries = [];
@@ -86,7 +86,7 @@ export default class extends Controller {
 
         this.store.update('budgets', budgets => {
             budgets = budgets.map(budget => {
-                if (budget.id === activeBudgetId)
+                if (budget.id === activeBudget.id)
                     budget = {...budget, balance: budget.balance + sum }
                 return budget;
             });

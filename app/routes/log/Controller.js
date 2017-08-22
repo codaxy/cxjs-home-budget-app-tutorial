@@ -35,6 +35,12 @@ export default class extends Controller {
     };
 
     clear(e, {store}) {
-        store.set('entries', []);
+        let activeBudget = store.get('activeBudget');
+        store.update('budgets', budgets => {
+            let index = budgets.indexOf(activeBudget);
+            return [...budgets.slice(0, index), ...budgets.slice(index+1)]
+        });
+        store.delete('activeBudget');
+        store.delete('entries');
     }
 }

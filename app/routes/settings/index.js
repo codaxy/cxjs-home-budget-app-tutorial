@@ -1,4 +1,4 @@
-import { HtmlElement, Link, Section, FlexCol, FlexRow, Button, Grid, Repeater, Radio } from 'cx/widgets';
+import { HtmlElement, Link, Section, FlexCol, FlexRow, Button, Grid, Repeater, Radio, TextField } from 'cx/widgets';
 import { Chart, Gridlines, Column, Legend, CategoryAxis, NumericAxis } from 'cx/charts';
 import { Svg } from 'cx/svg';
 import { bind, tpl, expr, KeySelection } from 'cx/ui';
@@ -10,21 +10,30 @@ export default <cx>
     </h2>
     <FlexCol spacing='large' controller={Controller}>
         <Section mod="card" >
+            <TextField placeholder="Budget name" value={bind('$page.budgetName')} />
             <Button mod="hollow" icon="add" onClick="onNewBudget">Add budget</Button>
+            <Button mod="hollow" icon="delete" 
+                onClick="onDeleteBudget"
+                disabled={expr("!{$page.activeBudgetId}")}>
+                Delete budget
+            </Button>
         </Section>
         <FlexRow spacing='large'>
             <Section mod="card" title="Budgets">
                 <Grid records={bind('budgets')}
+                    border={true}
+                    emptyText="No data."
                     style="width: 450px;"
                     columns={[
                         {   
                             header: "Active",
-                            items: <cx><Radio value={bind("activeBudgetId")} option={bind('$record.id')} /></cx>
+                            items: <cx><Radio value={bind("activeBudget")} option={bind('$record')} /></cx>
                         },
                         { header: "Budget name", field: 'name', sortable: true },
-                        { header: 'Balance', field: 'balance', format: 'currency;;2', sortable: true }
+                        { header: 'Balance', field: 'balance', format: 'currency;;2', sortable: true },
+                        { header: 'Last update', field: 'lastSyncTimestamp', format: 'datetime;|N/A', sortable: true }
                     ]}
-                    selection={{type: KeySelection, bind:'activeBudgetId'}}
+                    selection={{type: KeySelection, bind:'$page.activeBudgetId'}}
                 />
             </Section>
             <Section mod="card" title="Balances">

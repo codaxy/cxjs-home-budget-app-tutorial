@@ -11,6 +11,7 @@ export default <cx>
     <Section mod="card" div controller={Controller}>
         <Grid
             records:bind="entries"
+            lockColumnWidths
             scrollable
             buffered
             style="height: 300px"
