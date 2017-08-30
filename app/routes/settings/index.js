@@ -22,6 +22,7 @@ export default <cx>
             <Section mod="card" title="Budgets">
                 <Grid records={bind('budgets')}
                     border={true}
+                    scrollable
                     emptyText="No data."
                     style="width: 450px;"
                     columns={[
