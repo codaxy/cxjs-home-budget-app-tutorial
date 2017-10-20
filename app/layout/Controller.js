@@ -17,30 +17,29 @@ export default class extends Controller {
 
         this.addTrigger('budgets', ['budgets'], budgets => {
             UIState.set('budgets', budgets);
-        })
+        });
 
         // get active budget
         let activeBudget = UIState.get('activeBudget');
         this.store.set('activeBudget', activeBudget);
 
-        this.addTrigger('activeBudget', ['activeBudget'], activeBudget => {
-            UIState.set('activeBudget', activeBudget);
+        this.addTrigger('activeBudget', ['activeBudget.id'], activeBudgetId => {
+            //
 
-            if (!activeBudget)
-                return;
-
-            this.store.update('budgets', budgets => budgets.map(b => {
-                return b.id === activeBudget.id ? activeBudget : b;
-            }));
-            
-            // load entries
-            this.store.set('entries', UIState.get(activeBudget.id) || []);
-
-            // unsubscribe/resubscribe to firebase
             if (this.unsubscribe)
                 this.unsubscribe();
-            this.unsubscribe = watchBudgetEntries(activeBudget.id, this.sync.bind(this));
+
+            if (!activeBudgetId)
+                return;
+            
+            // load entries
+            this.store.set('entries', UIState.get(activeBudgetId) || []);
+            this.unsubscribe = watchBudgetEntries(activeBudgetId, ::this.sync);
         }, true);
+
+        this.addTrigger('saveActiveBudget', ['activeBudget'], activeBudget => {
+            UIState.set('activeBudget', activeBudget);
+        });
 
         this.addTrigger('entries', ['entries'], (entries) => {
             const activeBudget = this.store.get('activeBudget');
@@ -49,7 +48,6 @@ export default class extends Controller {
             UIState.set(activeBudget.id, entries);
             this.sync();
         });
-
     }
 
     onDestroy() {
@@ -64,7 +62,7 @@ export default class extends Controller {
         syncBudgetEntries(budget.id, entries, lastSync)
             .then((newEntries) => {
                 console.log("Budget sync complete!");
-                this.store.update('activeBudget', c => ({ ...c, lastSyncTimestamp: Date.now() }));
+                this.store.set('activeBudget.lastSyncTimestamp', Date.now());
                 this.store.set('entries', newEntries);
             });
     }
